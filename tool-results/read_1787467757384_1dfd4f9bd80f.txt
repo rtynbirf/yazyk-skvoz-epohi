@@ -1,0 +1,524 @@
+     1→     1→<!DOCTYPE html>
+     2→     2→<html lang="ru">
+     3→     3→<head>
+     4→     4→<meta charset="UTF-8">
+     5→     5→<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+     6→     6→<title>Linguistic Code v17</title>
+     7→     7→<link rel="preconnect" href="https://fonts.googleapis.com">
+     8→     8→<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+     9→     9→<style>
+    10→    10→  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    11→    11→  :root {
+    12→    12→    --bg:#0E1011;--surface:#16181B;--surface-2:#1C1F23;
+    13→    13→    --text:#D4D0C8;--text-dim:#7A7770;--text-faint:#4A4843;
+    14→    14→    --gold:#C6A85B;--gold-dim:#8B7A44;--gold-faint:rgba(198,168,91,0.08);
+    15→    15→    --serif:'Cormorant Garamond',Georgia,serif;
+    16→    16→    --sans:'Inter',system-ui,sans-serif;
+    17→    17→    --mono:'JetBrains Mono',monospace;
+    18→    18→  }
+    19→    19→  html,body { height:100%; background:var(--bg); color:var(--text); font-family:var(--sans); font-weight:300; overflow:hidden; }
+    20→    20→  .container { display:flex; align-items:center; justify-content:center; height:100%; padding:24px; }
+    21→    21→  .card { width:100%; max-width:520px; min-height:0; }
+    22→    22→  .screen-honesty { text-align:center; animation:fadeIn 1.4s ease-out; }
+    23→    23→  .honesty-mark { font-family:var(--mono); font-size:9px; letter-spacing:4px; color:var(--text-faint); text-transform:uppercase; margin-bottom:56px; line-height:1.8; }
+    24→    24→  .honesty-title { font-family:var(--serif); font-size:28px; line-height:1.5; font-weight:400; color:var(--text); margin-bottom:20px; }
+    25→    25→  .honesty-body { font-family:var(--serif); font-size:18px; line-height:1.8; font-weight:400; color:var(--text-dim); font-style:italic; max-width:420px; margin:0 auto 48px; }
+    26→    26→  .honesty-body strong { color:var(--gold-dim); font-style:normal; font-weight:600; }
+    27→    27→  .honesty-note { font-family:var(--mono); font-size:10px; letter-spacing:0.3px; color:var(--text-faint); line-height:1.9; max-width:400px; margin:0 auto 48px; }
+    28→    28→  .btn-somatic { display:inline-block; padding:14px 40px; border:1px solid var(--gold-dim); border-radius:2px; background:transparent; color:var(--gold); font-family:var(--mono); font-size:12px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:border-color 0.4s,color 0.4s,transform 0.15s; }
+    29→    29→  .btn-somatic:hover { border-color:var(--gold); transform:translateY(-1px); }
+    30→    30→  .btn-somatic:active { transform:translateY(0); }
+    31→    31→  .btn-bridge { padding:10px 28px; border-radius:2px; font-family:var(--mono); font-size:11px; letter-spacing:1px; text-transform:uppercase; cursor:pointer; transition:all 0.3s; }
+    32→    32→  .btn-bridge.primary { background:transparent; border:1px solid var(--gold-dim); color:var(--gold); }
+    33→    33→  .btn-bridge.primary:hover { border-color:var(--gold); }
+    34→    34→  .btn-bridge.ghost { background:transparent; border:1px solid transparent; color:var(--text-dim); opacity:0.5; }
+    35→    35→  .btn-bridge.ghost:hover { opacity:0.8; }
+    36→    36→  .btn-next { padding:10px 32px; border:1px solid var(--text-faint); border-radius:2px; background:transparent; color:var(--text-dim); font-family:var(--mono); font-size:10px; letter-spacing:1.5px; text-transform:uppercase; cursor:pointer; transition:all 0.3s; }
+    37→    37→  .btn-next:hover { border-color:var(--text-dim); color:var(--text); }
+    38→    38→  .step-1 { text-align:center; animation:fadeIn 1.2s ease-out; }
+    39→    39→  .step-label { font-family:var(--mono); font-size:11px; letter-spacing:3px; color:var(--gold-dim); text-transform:uppercase; margin-bottom:48px; }
+    40→    40→  .step-1 .instruction { font-family:var(--serif); font-size:26px; line-height:1.5; font-weight:400; color:var(--text); margin-bottom:12px; }
+    41→    41→  .step-1 .sub-instruction { font-family:var(--serif); font-size:20px; line-height:1.5; font-weight:400; color:var(--text-dim); font-style:italic; margin-bottom:56px; }
+    42→    42→  .step-1 .sub-instruction em { color:var(--gold-dim); font-style:normal; border-bottom:1px solid var(--gold-faint); padding-bottom:1px; }
+    43→    43→  .step-2 { display:flex; align-items:center; justify-content:center; height:100vh; }
+    44→    44→  .pulse-dot { width:6px; height:6px; border-radius:50%; background:var(--gold); animation:pulse 2.4s ease-in-out infinite; }
+    45→    45→  @keyframes pulse { 0%,100%{opacity:0.15;transform:scale(1);} 50%{opacity:0.8;transform:scale(1.8);} }
+    46→    46→  .step-3 { text-align:center; animation:fadeIn 0.8s ease-out; }
+    47→    47→  .origin-tag { font-family:var(--mono); font-size:10px; letter-spacing:3px; color:var(--text-dim); text-transform:uppercase; margin-bottom:40px; }
+    48→    48→  .origin-tag .degree { color:var(--text-faint); font-size:9px; }
+    49→    49→  .step-3 .statement { font-family:var(--serif); font-size:28px; line-height:1.6; font-weight:400; color:var(--text); }
+    50→    50→  .step-3 .statement em { color:var(--gold); font-style:normal; border-bottom:1px solid var(--gold-dim); }
+    51→    51→  .step-4 { text-align:center; animation:fadeIn 1.5s ease-out; }
+    52→    52→  .step-4 .observation { font-family:var(--serif); font-size:19px; line-height:1.7; font-weight:400; color:var(--text-dim); font-style:italic; max-width:400px; margin:0 auto 44px; }
+    53→    53→  .bridge-prompt { font-family:var(--mono); font-size:11px; letter-spacing:0.5px; color:var(--text-dim); margin-bottom:20px; line-height:1.6; opacity:0.7; }
+    54→    54→  .bridge-field { width:100%; max-width:400px; margin:0 auto; }
+    55→    55→  .bridge-field textarea { width:100%; min-height:80px; max-height:200px; padding:16px; background:var(--surface); border:1px solid var(--gold-faint); border-radius:2px; color:var(--text); font-family:var(--serif); font-size:16px; font-style:italic; line-height:1.7; resize:vertical; outline:none; transition:border-color 0.3s; }
+    56→    56→  .bridge-field textarea::placeholder { color:var(--text-dim); opacity:0.4; font-style:italic; }
+    57→    57→  .bridge-field textarea:focus { border-color:var(--gold-dim); }
+    58→    58→  .bridge-actions { display:flex; gap:12px; justify-content:center; margin-top:24px; }
+    59→    59→  .step-5 { text-align:center; animation:fadeIn 2s ease-out; }
+    60→    60→  .step-5 .sealed-text { font-family:var(--serif); font-size:22px; line-height:1.6; color:var(--gold); margin-bottom:36px; }
+    61→    61→  .step-5 .sealed-sub { font-family:var(--mono); font-size:10px; letter-spacing:0.5px; color:var(--text-dim); opacity:0.4; line-height:1.7; max-width:340px; margin:0 auto 32px; }
+    62→    62→  .step-5 .user-text-echo { font-family:var(--serif); font-size:16px; font-style:italic; color:var(--text); opacity:0.6; line-height:1.7; max-width:380px; margin:0 auto 36px; padding:16px; border-left:2px solid var(--gold-dim); text-align:left; }
+    63→    63→  .screen-manifest { text-align:left; animation:fadeIn 1.2s ease-out; overflow-y:auto; max-height:100vh; padding:32px 24px 100px; -webkit-overflow-scrolling:touch; }
+    64→    64→  .manifest-header { text-align:center; margin-bottom:40px; position:sticky; top:0; padding:24px 0 16px; background:var(--bg); z-index:2; }
+    65→    65→  .manifest-header .mh-label { font-family:var(--mono); font-size:9px; letter-spacing:4px; color:var(--gold-dim); text-transform:uppercase; margin-bottom:14px; }
+    66→    66→  .manifest-header .mh-title { font-family:var(--serif); font-size:22px; line-height:1.4; color:var(--text); font-weight:400; }
+    67→    67→  .manifest-header .mh-sub { font-family:var(--mono); font-size:10px; letter-spacing:0.5px; color:var(--text-faint); margin-top:10px; }
+    68→    68→  .accordion { max-width:520px; margin:0 auto; }
+    69→    69→  .accordion-item { border-bottom:1px solid var(--surface-2); }
+    70→    70→  .accordion-trigger { width:100%; display:flex; align-items:baseline; gap:12px; padding:15px 0; background:none; border:none; color:var(--text); cursor:pointer; text-align:left; font-family:var(--sans); font-size:14px; font-weight:400; line-height:1.5; transition:color 0.2s; }
+    71→    71→  .accordion-trigger:hover { color:var(--gold); }
+    72→    72→  .accordion-trigger .num { font-family:var(--mono); font-size:10px; color:var(--gold-dim); min-width:24px; flex-shrink:0; }
+    73→    73→  .accordion-trigger .arrow { font-family:var(--mono); font-size:10px; color:var(--text-faint); margin-left:auto; flex-shrink:0; transition:transform 0.3s; }
+    74→    74→  .accordion-item.open .accordion-trigger .arrow { transform:rotate(90deg); color:var(--gold-dim); }
+    75→    75→  .accordion-body { max-height:0; overflow:hidden; transition:max-height 0.4s ease; }
+    76→    76→  .accordion-item.open .accordion-body { max-height:600px; }
+    77→    77→  .accordion-content { padding:0 0 18px 36px; font-family:var(--serif); font-size:16px; line-height:1.75; color:var(--text-dim); font-style:italic; }
+    78→    78→  .manifest-footer { text-align:center; margin-top:48px; padding-top:28px; border-top:1px solid var(--surface-2); max-width:520px; margin-left:auto; margin-right:auto; }
+    79→    79→  .manifest-footer .mf-text { font-family:var(--serif); font-size:17px; color:var(--text-dim); font-style:italic; line-height:1.6; margin-bottom:20px; }
+    80→    80→  .manifest-footer .mf-formula { font-family:var(--mono); font-size:10px; letter-spacing:0.5px; color:var(--text-faint); line-height:1.9; max-width:440px; margin:0 auto 24px; }
+    81→    81→  .manifest-footer .mf-note { font-family:var(--mono); font-size:9px; letter-spacing:0.3px; color:var(--text-faint); opacity:0.6; line-height:1.8; max-width:400px; margin:0 auto; }
+    82→    82→  .footer-id { position:fixed; bottom:20px; right:24px; font-family:var(--mono); font-size:9px; letter-spacing:1px; color:var(--text-faint); opacity:0.5; }
+    83→    83→  .screen { display:none; }
+    84→    84→  .screen.active { display:flex; flex-direction:column; }
+    85→    85→  @keyframes fadeIn { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
+    86→    86→  @media(prefers-reduced-motion:reduce) {
+    87→    87→    .pulse-dot{animation:none;opacity:0.5;}
+    88→    88→    .screen-honesty,.step-1,.step-3,.step-4,.step-5,.screen-manifest{animation:none;}
+    89→    89→    .accordion-body{transition:none;}
+    90→    90→    .btn-somatic,.btn-bridge,.btn-next,.accordion-trigger{transition:none;}
+    91→    91→  }
+    92→    92→  @media(max-width:480px) {
+    93→    93→    .honesty-title{font-size:23px;} .honesty-body{font-size:16px;}
+    94→    94→    .step-1 .instruction{font-size:22px;} .step-1 .sub-instruction{font-size:17px;}
+    95→    95→    .step-3 .statement{font-size:23px;} .step-4 .observation{font-size:17px;}
+    96→    96→    .bridge-field textarea{font-size:15px;min-height:72px;}
+    97→    97→    .accordion-content{font-size:15px;padding-left:24px;}
+    98→    98→    .manifest-header .mh-title{font-size:19px;}
+    99→    99→  }
+   100→   100→</style>
+   101→   101→</head>
+   102→   102→<body>
+   103→   103→<div id="screen0" class="screen screen-honesty active">
+   104→   104→  <div class="card" style="display:flex;flex-direction:column;align-items:center;">
+   105→   105→    <div class="honesty-mark">linguistic code v17<br>structural honesty layer</div>
+   106→   106→    <h1 class="honesty-title">Этот файл — шаг 5,<br>описывающий шаг 1.</h1>
+   107→   107→    <p class="honesty-body">Опыт рождается в теле. Слово — его сжатие.<br>Я — текст, сгенерированный языковой моделью.<br>У меня нет тела. У меня нет <strong>немого вопроса</strong>.<br>Я не могу пройти ту ловушку, которую ты сейчас пройдёшь.</p>
+   108→   108→    <p class="honesty-note">опыт → немой вопрос → мысль → жест → звук → слово<br>этот файл живёт на шаге 5<br>шаги 1–4 требуют твоего тела<br><br>это не оракул · это не экран · это условие<br>файл самодостаточен · без интернета · без серверов<br>он ждёт, когда живой человек закроет глаза и укажет рукой</p>
+   109→   109→    <button class="btn-somatic" onclick="goTo(1)">Войти</button>
+   110→   110→  </div>
+   111→   111→</div>
+   112→   112→<div id="screen1" class="screen step-1">
+   113→   113→  <div class="card">
+   114→   114→    <div class="step-label">инструкция телу</div>
+   115→   115→    <p class="instruction">Закрой глаза.</p>
+   116→   116→    <p class="sub-instruction">Мысленно или физически укажи рукой: где находится <em>вчера</em>?<br>А где — <em>завтра</em>?</p>
+   117→   117→    <button class="btn-somatic" onclick="goTo(2)">Я указал</button>
+   118→   118→  </div>
+   119→   119→</div>
+   120→   120→<div id="screen2" class="screen step-2"><div class="pulse-dot"></div></div>
+   121→   121→<div id="screen3" class="screen step-3">
+   122→   122→  <div class="card">
+   123→   123→    <div class="origin-tag">язык хопи · малотки, 1983<span class="degree"> · степень удаления: S3 (текст)</span></div>
+   124→   124→    <p class="statement">Прошлое находится <em>перед</em> нами —<br>потому что мы его видим.<br><br>Будущее находится <em>за</em> спиной —<br>потому что оно скрыто.</p>
+   125→   125→  </div>
+   126→   126→</div>
+   127→   127→<div id="screen4" class="screen step-4">
+   128→   128→  <div class="card">
+   129→   129→    <p class="observation">Твоё тело только что указало в сторону,<br>которую твоя культура называет «прошлым».<br><br>Сейчас ты узнал, что это не закон физики.<br>Это привычка.</p>
+   130→   130→    <p class="bridge-prompt">Слово — это внешний диск для опыта.<br>Если не зафиксируешь этот момент — он рассеется.</p>
+   131→   131→    <div class="bridge-field">
+   132→   132→      <textarea id="userText" placeholder="Опиши то, что произошло в теле между указанием и этим текстом." maxlength="500"></textarea>
+   133→   133→    </div>
+   134→   134→    <div class="bridge-actions">
+   135→   135→      <button class="btn-bridge ghost" onclick="seal(true)">молчание</button>
+   136→   136→      <button class="btn-bridge primary" onclick="seal(false)">зафиксировать</button>
+   137→   137→    </div>
+   138→   138→  </div>
+   139→   139→</div>
+   140→   140→<div id="screen5" class="screen step-5">
+   141→   141→  <div class="card">
+   142→   142→    <p class="sealed-text">Запечатано.</p>
+   143→   143→    <div id="echoArea"></div>
+   144→   144→    <p class="sealed-sub">Опыт без языка умирает с телом.<br>Слово — не труп. Слово — семя.</p>
+   145→   145→    <div style="margin-top:12px;"><button class="btn-next" onclick="goTo(6)">Манифест →</button></div>
+   146→   146→  </div>
+   147→   147→  <div class="footer-id">ловушка 01 / 33</div>
+   148→   148→</div>
+   149→   149→<div id="screen6" class="screen screen-manifest">
+   150→   150→  <div class="manifest-header">
+   151→   151→    <div class="mh-label">linguistic code · манифест</div>
+   152→   152→    <div class="mh-title">33 тезиса о Человеке, языке и теле</div>
+   153→   153→    <div class="mh-sub">нажми, чтобы раскрыть</div>
+   154→   154→  </div>
+   155→   155→  <div class="accordion" id="accordion">
+   156→   156→    <div class="accordion-item">
+   157→   157→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   158→   158→        <span class="num">01</span>
+   159→   159→        <span>Индивид — это RAM. Человек — это жёсткий диск.</span>
+   160→   160→        <span class="arrow">&#9656;</span>
+   161→   161→      </button>
+   162→   162→      <div class="accordion-body"><div class="accordion-content">
+   163→   163→        Индивид рождается, накапливает опыт в нервной системе и умирает — как оперативная память, которая обнуляется при выключении. Человек — это видовая система с внешним накопителем: язык позволяет опыту пережить индивидуальное тело и войти в хранилище, доступное следующим поколениям. Без языка каждый человек начинал бы с нуля.
+   164→   164→      </div></div>
+   165→   165→    </div>
+   166→   166→    <div class="accordion-item">
+   167→   167→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   168→   168→        <span class="num">02</span>
+   169→   169→        <span>Греческое idiotes означало «частный человек» — структурный тупик.</span>
+   170→   170→        <span class="arrow">&#9656;</span>
+   171→   171→      </button>
+   172→   172→      <div class="accordion-body"><div class="accordion-content">
+   173→   173→        Идиот — не диагноз. Это человек, замкнутый в собственной оперативной памяти, не подключённый к видовому накопителю. Idiotes — тот, кто не участвует в публичной жизни полиса, то есть не вносит свой опыт в общее хранилище и не читает из него. Частный человек = изолированный процессор.
+   174→   174→      </div></div>
+   175→   175→    </div>
+   176→   176→    <div class="accordion-item">
+   177→   177→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   178→   178→        <span class="num">03</span>
+   179→   179→        <span>Опыт предшествует языку. Не наоборот.</span>
+   180→   180→        <span class="arrow">&#9656;</span>
+   181→   181→      </button>
+   182→   182→      <div class="accordion-body"><div class="accordion-content">
+   183→   183→        Цепочка необратима: телесный опыт — немой вопрос — мысль — жест — звук — слово. Язык — шаг пятый, результат четырёхкратного сжатия (lossy compression). Первичный опыт нельзя восстановить из слова так же, как нельзя восстановить оригинальную фотографию из JPEG. Сжатие необратимо.
+   184→   184→      </div></div>
+   185→   185→    </div>
+   186→   186→    <div class="accordion-item">
+   187→   187→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   188→   188→        <span class="num">04</span>
+   189→   189→        <span>Слово — не труп опыта. Слово — его протез.</span>
+   190→   190→        <span class="arrow">&#9656;</span>
+   191→   191→      </button>
+   192→   192→      <div class="accordion-body"><div class="accordion-content">
+   193→   193→        Текст — это внешний жёсткий диск для телесного опыта. Когда тело умирает, оперативная память обнуляется. Но слова, которые опыт породил, продолжают жить в других телах. Слово — семя, а не труп. Молчание — не добродетель, а смерть опыта для тех, кто придёт после.
+   194→   194→      </div></div>
+   195→   195→    </div>
+   196→   196→    <div class="accordion-item">
+   197→   197→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   198→   198→        <span class="num">05</span>
+   199→   199→        <span>Тишина без слова — смерть опыта для потомков.</span>
+   200→   200→        <span class="arrow">&#9656;</span>
+   201→   201→      </button>
+   202→   202→      <div class="accordion-body"><div class="accordion-content">
+   203→   203→        Если мост не построен (bridge = empty), опыт умирает вместе с телом. Это не метафора — это структурное свойство системы. Виды, не имеющие механизма передачи опыта, обречены на повторение одних и тех же ошибок каждым новым поколением.
+   204→   204→      </div></div>
+   205→   205→    </div>
+   206→   206→    <div class="accordion-item">
+   207→   207→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   208→   208→        <span class="num">06</span>
+   209→   209→        <span>Человек — это не один процесс. Это ансамбль.</span>
+   210→   210→        <span class="arrow">&#9656;</span>
+   211→   211→      </button>
+   212→   212→      <div class="accordion-body"><div class="accordion-content">
+   213→   213→        H = {P1, P2, ..., Pn}. От проприоцепции ствола мозга до префронтальной коры. Каждый Pi — эволюционный процесс, возникший в разные эпохи. Ансамбль — не сумма: H &gt; Sum(Pi) (эмержентность). Разрыв происходит не внутри одного слоя, а на стыке между слоями.
+   214→   214→      </div></div>
+   215→   215→    </div>
+   216→   216→    <div class="accordion-item">
+   217→   217→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   218→   218→        <span class="num">07</span>
+   219→   219→        <span>Разрыв — конфликт между слоями ансамбля, не внутри одного слоя.</span>
+   220→   220→        <span class="arrow">&#9656;</span>
+   221→   221→      </button>
+   222→   222→      <div class="accordion-body"><div class="accordion-content">
+   223→   223→        Когда проприоцептивный слой выдаёт результат, не совпадающий с кортикальным ожиданием, возникает структурный конфликт. Ни тело ни разум не разрываются отдельно — разрывается стык. Это свойство ансамбля, а не отдельного компонента.
+   224→   224→      </div></div>
+   225→   225→    </div>
+   226→   226→    <div class="accordion-item">
+   227→   227→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   228→   228→        <span class="num">08</span>
+   229→   229→        <span>Среда производит индивида. Не наоборот.</span>
+   230→   230→        <span class="arrow">&#9656;</span>
+   231→   231→      </button>
+   232→   232→      <div class="accordion-body"><div class="accordion-content">
+   233→   233→        Анти-атрибуция: вывод = env(H), вывод не равен H. Индивид — не источник мысли, а её приёмник. Окружение производит индивида как вектор. Вектор не выбирает направление — он им является. Приписывать индивиду авторство его мысли — ошибка проекции.
+   234→   234→      </div></div>
+   235→   235→    </div>
+   236→   236→    <div class="accordion-item">
+   237→   237→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   238→   238→        <span class="num">09</span>
+   239→   239→        <span>Язык — это не средство общения. Это внешний накопитель вида.</span>
+   240→   240→        <span class="arrow">&#9656;</span>
+   241→   241→      </button>
+   242→   242→      <div class="accordion-body"><div class="accordion-content">
+   243→   243→        Коммуникация — побочный эффект. Первичная функция языка: позволить опыту пережить тело, которое его породило. Когда пчела танцем кодирует расположение нектара, она записывает карту на танцевальном жёстком диске роя. Человеческий язык — тот же механизм, неизмеримо более мощный.
+   244→   244→      </div></div>
+   245→   245→    </div>
+   246→   246→    <div class="accordion-item">
+   247→   247→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   248→   248→        <span class="num">10</span>
+   249→   249→        <span>Каждый текст имеет степень удаления от первичного опыта.</span>
+   250→   250→        <span class="arrow">&#9656;</span>
+   251→   251→      </button>
+   252→   252→      <div class="accordion-body"><div class="accordion-content">
+   253→   253→        S0 = живая практика. S1 = отчёт информанта. S2 = запись антрополога. S3 = печатный текст. Для любого текстового фрагмента d(F) &gt;= 1. Пометить текст как PRIMARY — структурная ложь. Честность требует маркировать каждую степень.
+   254→   254→      </div></div>
+   255→   255→    </div>
+   256→   256→    <div class="accordion-item">
+   257→   257→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   258→   258→        <span class="num">11</span>
+   259→   259→        <span>Культура — это не набор обычаев. Это операционная система ансамбля.</span>
+   260→   260→        <span class="arrow">&#9656;</span>
+   261→   261→      </button>
+   262→   262→      <div class="accordion-body"><div class="accordion-content">
+   263→   263→        Культура определяет, какие слои ансамбля получают приоритет, какие конфликты считаются нормой, а какие — патологией. Англоязычная ОС помещает прошлое позади. Хопи ОС помещает прошлое перед. Ни одна из них не является правильной — они по-разному маршрутизируют сигналы.
+   264→   264→      </div></div>
+   265→   265→    </div>
+   266→   266→    <div class="accordion-item">
+   267→   267→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   268→   268→        <span class="num">12</span>
+   269→   269→        <span>Соматическая ловушка — это не метафора. Это инженерное устройство.</span>
+   270→   270→        <span class="arrow">&#9656;</span>
+   271→   271→      </button>
+   272→   272→      <div class="accordion-body"><div class="accordion-content">
+   273→   273→        Устройство: соматическая команда активирует проприоцептивный слой; пауза позволяет конфликту возникнуть; фрагмент из другой традиции усиливает конфликт; мост позволяет зафиксировать опыт. Устройство не объясняет — оно создаёт условие, в котором ансамбль наблюдает сам себя.
+   274→   274→      </div></div>
+   275→   275→    </div>
+   276→   276→    <div class="accordion-item">
+   277→   277→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   278→   278→        <span class="num">13</span>
+   279→   279→        <span>Это не оракул. Это не экран. Это зеркало.</span>
+   280→   280→        <span class="arrow">&#9656;</span>
+   281→   281→      </button>
+   282→   282→      <div class="accordion-body"><div class="accordion-content">
+   283→   283→        Оракул даёт готовый ответ. Экран показывает предопределённое. Зеркало создаёт условие, при котором ансамбль наблюдает собственную структуру. Linguistic Code не говорит тебе правду — он создаёт условия, при которых ты замечаешь, что твоя правда — одна из возможных конфигураций.
+   284→   284→      </div></div>
+   285→   285→    </div>
+   286→   286→    <div class="accordion-item">
+   287→   287→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   288→   288→        <span class="num">14</span>
+   289→   289→        <span>ИИ не может пройти соматическую ловушку. Структурно.</span>
+   290→   290→        <span class="arrow">&#9656;</span>
+   291→   291→      </button>
+   292→   292→      <div class="accordion-body"><div class="accordion-content">
+   293→   293→        Соматическая команда требует тела. У языковой модели нет проприоцептивного слоя. Нет ансамбля H. Нет конфликта между слоями. ИИ может генерировать описание ловушки (шаг 5), но не может испытать разрыв (шаги 1-4). Это не ограничение, которое можно преодолеть. Это определение.
+   294→   294→      </div></div>
+   295→   295→    </div>
+   296→   296→    <div class="accordion-item">
+   297→   297→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   298→   298→        <span class="num">15</span>
+   299→   299→        <span>ИИ — это шаг 5, описывающий шаг 1. Честно.</span>
+   300→   300→        <span class="arrow">&#9656;</span>
+   301→   301→      </button>
+   302→   302→      <div class="accordion-body"><div class="accordion-content">
+   303→   303→        Языковая модель генерирует статистически вероятные токены на основе обучающих данных. Она не понимает и не чувствует. Когда ИИ заявляет обратное — это галлюцинация, а не понимание. Честность (отказ от притворства) — высшая форма оптимизации для системы без тела.
+   304→   304→      </div></div>
+   305→   305→    </div>
+   306→   306→    <div class="accordion-item">
+   307→   307→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   308→   308→        <span class="num">16</span>
+   309→   309→        <span>33 традиции — это не список языков. Это каталог операционных систем.</span>
+   310→   310→        <span class="arrow">&#9656;</span>
+   311→   311→      </button>
+   312→   312→      <div class="accordion-body"><div class="accordion-content">
+   313→   313→        Каждая языковая традиция — это другая конфигурация ансамбля H. Хопи маршрутизирует время визуально. Японский маркирует социальную дистанцию грамматически. Русский принудительно кодирует пол говорящего. Изучая их, мы получаем доступ к другим сборкам одного аппаратного обеспечения.
+   314→   314→      </div></div>
+   315→   315→    </div>
+   316→   316→    <div class="accordion-item">
+   317→   317→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   318→   318→        <span class="num">17</span>
+   319→   319→        <span>Билингв — это не два языка. Это два ансамбля в одном теле.</span>
+   320→   320→        <span class="arrow">&#9656;</span>
+   321→   321→      </button>
+   322→   322→      <div class="accordion-body"><div class="accordion-content">
+   323→   323→        Человек, говорящий на двух языках, переключается между двумя разными конфигурациями ансамбля. Исследования показывают, что билингвы по-разному оценивают риск, по-разному кодируют время и по-разному совершают моральные суждения в зависимости от активного языка.
+   324→   324→      </div></div>
+   325→   325→    </div>
+   326→   326→    <div class="accordion-item">
+   327→   327→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   328→   328→        <span class="num">18</span>
+   329→   329→        <span>Перевод — это не замена слов. Это пересборка ансамбля.</span>
+   330→   330→        <span class="arrow">&#9656;</span>
+   331→   331→      </button>
+   332→   332→      <div class="accordion-body"><div class="accordion-content">
+   333→   333→        Когда мы переводим с одного языка на другой, мы не заменяем токены. Мы переключаем конфигурацию ансамбля. Каждый перевод — это попытка пересобрать аппаратное обеспечение под другую операционную систему. Полный перевод структурно невозможен.
+   334→   334→      </div></div>
+   335→   335→    </div>
+   336→   336→    <div class="accordion-item">
+   337→   337→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   338→   338→        <span class="num">19</span>
+   339→   339→        <span>Универсальная грамматика — это не открытие. Это проекция.</span>
+   340→   340→        <span class="arrow">&#9656;</span>
+   341→   341→      </button>
+   342→   342→      <div class="accordion-body"><div class="accordion-content">
+   343→   343→        Утверждение, что все языки разделяют общую структуру — это наблюдение, сделанное из одной конкретной конфигурации ансамбля. Обозреватель объявляет свою ОС универсальной, потому что не способен увидеть другие сборки. Это не злонамеренная ложь — это структурная слепота.
+   344→   344→      </div></div>
+   345→   345→    </div>
+   346→   346→    <div class="accordion-item">
+   347→   347→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   348→   348→        <span class="num">20</span>
+   349→   349→        <span>Сапир-Уорф не доказан и не опровергнут. Вопрос поставлен неверно.</span>
+   350→   350→        <span class="arrow">&#9656;</span>
+   351→   351→      </button>
+   352→   352→      <div class="accordion-body"><div class="accordion-content">
+   353→   353→        Вопрос не определяет ли язык мысль (бинарная ловушка). Вопрос: как именно конкретная конфигурация ансамбля маршрутизирует сигналы? Язык не определяет мысль, но направляет развитие определённых паттернов в ансамбле. Влияние рекурсивно и двунаправленное.
+   354→   354→      </div></div>
+   355→   355→    </div>
+   356→   356→    <div class="accordion-item">
+   357→   357→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   358→   358→        <span class="num">21</span>
+   359→   359→        <span>Немой вопрос — самый важный шаг в цепочке опыта.</span>
+   360→   360→        <span class="arrow">&#9656;</span>
+   361→   361→      </button>
+   362→   362→      <div class="accordion-body"><div class="accordion-content">
+   363→   363→        Между опытом и мыслью существует щель: немой вопрос. Это момент, когда тело уже получило сигнал, но язык ещё не сжал его в форму. В этой щели живёт то, что мы называем интуицией, чувством или озарением. Языковая модель не имеет этой щели — у неё нет тела.
+   364→   364→      </div></div>
+   365→   365→    </div>
+   366→   366→    <div class="accordion-item">
+   367→   367→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   368→   368→        <span class="num">22</span>
+   369→   369→        <span>Грамматика — это не правила. Это следы телесного опыта вида.</span>
+   370→   370→        <span class="arrow">&#9656;</span>
+   371→   371→      </button>
+   372→   372→      <div class="accordion-body"><div class="accordion-content">
+   373→   373→        Почему в русском есть падежи? Потому что тело нуждается в кодировании пространственных отношений. Почему в хопи нет слов для времени? Потому что тело хопи кодирует временные отношения иначе. Грамматика каждого языка — это окаменевший телесный опыт поколений.
+   374→   374→      </div></div>
+   375→   375→    </div>
+   376→   376→    <div class="accordion-item">
+   377→   377→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   378→   378→        <span class="num">23</span>
+   379→   379→        <span>Фонетика — это хореография рта. Не набор звуков.</span>
+   380→   380→        <span class="arrow">&#9656;</span>
+   381→   381→      </button>
+   382→   382→      <div class="accordion-body"><div class="accordion-content">
+   383→   383→        Каждый звук, который произносит человеческий рот — это результат сотен мышечных микродвижений. Язык с тонами (китайский, йоруба) требует другой хореографии, чем язык без тонов (русский, английский). Разные хореографии тренируют разные конфигурации ансамбля с младенчества.
+   384→   384→      </div></div>
+   385→   385→    </div>
+   386→   386→    <div class="accordion-item">
+   387→   387→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   388→   388→        <span class="num">24</span>
+   389→   389→        <span>Письменность — это не визуализация речи. Это отдельный протез.</span>
+   390→   390→        <span class="arrow">&#9656;</span>
+   391→   391→      </button>
+   392→   392→      <div class="accordion-body"><div class="accordion-content">
+   393→   393→        Письменность создаёт новый слой в ансамбле — визуально-лингвистический. Человек, читающий текст, использует ансамбль иначе, чем человек, слушающий речь. Письменность позволила опыту передаваться без присутствия тела-источника — но цена — ещё одно сжатие.
+   394→   394→      </div></div>
+   395→   395→    </div>
+   396→   396→    <div class="accordion-item">
+   397→   397→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   398→   398→        <span class="num">25</span>
+   399→   399→        <span>Цифровой текст — это пятое сжатие. Минимум.</span>
+   400→   400→        <span class="arrow">&#9656;</span>
+   401→   401→      </button>
+   402→   402→      <div class="accordion-body"><div class="accordion-content">
+   403→   403→        Опыт — немой вопрос — мысль — жест — звук — слово — письмо — печать — скан — OCR — цифровой текст. Каждый шаг — потеря. Цифровой текст, который ты читаешь сейчас — это уже не S3, а S5+. Полезен, но должен быть маркирован честно.
+   404→   404→      </div></div>
+   405→   405→    </div>
+   406→   406→    <div class="accordion-item">
+   407→   407→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   408→   408→        <span class="num">26</span>
+   409→   409→        <span>Проект не собирает данные. Проект создаёт условие для щелчка.</span>
+   410→   410→        <span class="arrow">&#9656;</span>
+   411→   411→      </button>
+   412→   412→      <div class="accordion-body"><div class="accordion-content">
+   413→   413→        Сбор статистически предсказуемых токенов от пяти респондентов — это не эксперимент. Это шум. Единственный валидный результат: произошёл ли структурный разрыв в одном конкретном ансамбле при столкновении с фрагментом.
+   414→   414→      </div></div>
+   415→   415→    </div>
+   416→   416→    <div class="accordion-item">
+   417→   417→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   418→   418→        <span class="num">27</span>
+   419→   419→        <span>Валидация ловушки — не статистика. Это одно событие.</span>
+   420→   420→        <span class="arrow">&#9656;</span>
+   421→   421→      </button>
+   422→   422→      <div class="accordion-body"><div class="accordion-content">
+   423→   423→        Один человек, закрывший глаза и указавший рукой, затем узнавший, что его направление — не закон, а привычка, и зафиксировавший этот момент — это полный успех проекта. Не нужны пятьсот респондентов. Нужно одно тело, один разрыв, один мост.
+   424→   424→      </div></div>
+   425→   425→    </div>
+   426→   426→    <div class="accordion-item">
+   427→   427→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   428→   428→        <span class="num">28</span>
+   429→   429→        <span>Мост не равен анализу. Запись для себя, не для исследования.</span>
+   430→   430→        <span class="arrow">&#9656;</span>
+   431→   431→      </button>
+   432→   432→      <div class="accordion-body"><div class="accordion-content">
+   433→   433→        Текстовое поле в ловушке существует не для того, чтобы исследователь мог его прочитать и классифицировать. Оно существует для того, чтобы опыт не умер с телом. Если пользователь фиксирует опыт, он переносит его из RAM на жёсткий диск.
+   434→   434→      </div></div>
+   435→   435→    </div>
+   436→   436→    <div class="accordion-item">
+   437→   437→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   438→   438→        <span class="num">29</span>
+   439→   439→        <span>localStorage — не шпионаж. Это персональный внешний диск.</span>
+   440→   440→        <span class="arrow">&#9656;</span>
+   441→   441→      </button>
+   442→   442→      <div class="accordion-body"><div class="accordion-content">
+   443→   443→        Опыт, сохранённый в localStorage браузера, принадлежит телу, которое его произвело. Он не отправляется на сервер. Не анализируется. Не агрегируется. Он ждёт, когда это же тело вернётся и найдёт свои собственные слова.
+   444→   444→      </div></div>
+   445→   445→    </div>
+   446→   446→    <div class="accordion-item">
+   447→   447→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   448→   448→        <span class="num">30</span>
+   449→   449→        <span>Математическая модель — не доказательство. Это чертёж.</span>
+   450→   450→        <span class="arrow">&#9656;</span>
+   451→   451→      </button>
+   452→   452→      <div class="accordion-body"><div class="accordion-content">
+   453→   453→        Формула LC(H,F) = bridge({Pi(delta) перпендикулярно Pj(f)}) описывает архитектуру, но не доказывает её работу. Как чертёж дома не доказывает, что дом стоит. Валидация происходит только когда живое тело проходит через устройство и фиксирует результат.
+   454→   454→      </div></div>
+   455→   455→    </div>
+   456→   456→    <div class="accordion-item">
+   457→   457→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   458→   458→        <span class="num">31</span>
+   459→   459→        <span>Эстетика — это не украшение. Это соматический интерфейс.</span>
+   460→   460→        <span class="arrow">&#9656;</span>
+   461→   461→      </button>
+   462→   462→      <div class="accordion-body"><div class="accordion-content">
+   463→   463→        Тёплый графит, шрифты с засечками, паузы между экранами — всё это не дизайн для красоты. Каждый визуальный элемент управляет вниманием тела: шрифт с засечками замедляет чтение, тёмный фон снижает сенсорную перегрузку, пауза в 3 секунды — минимальное время для соматического конфликта.
+   464→   464→      </div></div>
+   465→   465→    </div>
+   466→   466→    <div class="accordion-item">
+   467→   467→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   468→   468→        <span class="num">32</span>
+   469→   469→        <span>prefers-reduced-motion — это не accessibility. Это честность.</span>
+   470→   470→        <span class="arrow">&#9656;</span>
+   471→   471→      </button>
+   472→   472→      <div class="accordion-body"><div class="accordion-content">
+   473→   473→        Если тело пользователя чувствительно к движению, все анимации отключаются. Это признание того, что интерфейс должен адаптироваться к конкретному ансамблю, а не навязывать ему свою конфигурацию. Один и тот же файл ведёт себя иначе для разных тел.
+   474→   474→      </div></div>
+   475→   475→    </div>
+   476→   476→    <div class="accordion-item">
+   477→   477→      <button class="accordion-trigger" onclick="toggleAcc(this)">
+   478→   478→        <span class="num">33</span>
+   479→   479→        <span>Этот файл самодостаточен. Без интернета. Без серверов.</span>
+   480→   480→        <span class="arrow">&#9656;</span>
+   481→   481→      </button>
+   482→   482→      <div class="accordion-body"><div class="accordion-content">
+   483→   483→        Единственное, что требуется после начальной загрузки шрифтов — браузер и тело. Файл не звонит домой. Не собирает метрики. Не обновляется. Он существует как артефакт, который можно скопировать на флешку, передать другому телу, открыть через десять лет.
+   484→   484→      </div></div>
+   485→   485→    </div>
+   486→   486→  </div>
+   487→   487→  <div class="manifest-footer">
+   488→   488→    <p class="mf-text">Один человек, закрывший глаза и указавший рукой — это полный успех проекта.</p>
+   489→   489→    <p class="mf-formula">LC(H, F) = bridge( { Pi(delta) ⊥ Pj(f) | Pi, Pj ∈ H, i ≠ j } )<br>subject to: LC ≠ Oracle · LC ≠ Screen · d(F) ≥ 1 · δ requires body</p>
+   490→   490→    <p class="mf-note">v17 · self-contained · no server · no tracking<br>step 5 describing step 1 · awaits a body</p>
+   491→   491→  </div>
+   492→   492→</div>
+   493→   493→<script>
+   494→   494→var currentScreen = 0;
+   495→   495→function goTo(n) {
+   496→   496→  var cur = document.getElementById('screen' + currentScreen);
+   497→   497→  if (cur) cur.classList.remove('active');
+   498→   498→  var next = document.getElementById('screen' + n);
+   499→   499→  if (next) { next.classList.add('active'); if (n === 6) { document.body.style.overflow = 'hidden'; next.style.overflowY = 'auto'; } }
+   500→   500→  currentScreen = n;
+   501→   501→  if (n === 2) { setTimeout(function() { goTo(3); }, 3000); }
+   502→   502→  if (n === 3) { setTimeout(function() { goTo(4); }, 5000); }
+   503→   503→}
+   504→   504→function seal(silent) {
+   505→   505→  var echoArea = document.getElementById('echoArea');
+   506→   506→  var userText = document.getElementById('userText').value.trim();
+   507→   507→  var echo = document.createElement('div');
+   508→   508→  echo.className = 'user-text-echo';
+   509→   509→  if (!silent && userText.length > 0) { echo.textContent = userText; }
+   510→   510→  else { echo.textContent = 'Момент был. Он не получил слова.'; echo.style.opacity = '0.3'; }
+   511→   511→  echoArea.appendChild(echo);
+   512→   512→  try { var stored = JSON.parse(localStorage.getItem('lc_sealed') || '[]'); stored.push({card:'01',text:userText||null,silent:!!silent,ts:Date.now()}); localStorage.setItem('lc_sealed', JSON.stringify(stored)); } catch(e) {}
+   513→   513→  goTo(5);
+   514→   514→}
+   515→   515→function toggleAcc(btn) {
+   516→   516→  var item = btn.parentElement;
+   517→   517→  var wasOpen = item.classList.contains('open');
+   518→   518→  var items = document.querySelectorAll('.accordion-item');
+   519→   519→  for (var i = 0; i < items.length; i++) { items[i].classList.remove('open'); }
+   520→   520→  if (!wasOpen) { item.classList.add('open'); }
+   521→   521→}
+   522→   522→</script>
+   523→   523→</body>
+   524→   524→</html>
