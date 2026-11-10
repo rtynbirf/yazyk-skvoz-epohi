@@ -54,4 +54,11 @@ jobs:
           fi
           git add traffic.json
           git commit -m "chore(traffic): счётчик-автомат обновил посещения"
-          git push
+          # сервер GitHub бывает недоступен на приёме (fatal error in commit_refs) —
+          # переход с повторами: 3 попытки с выдержкой
+          for i in 1 2 3; do
+            if git push; then exit 0; fi
+            echo "δ: пуш не принят (попытка $i), выдержка 10 с"
+            sleep 10
+          done
+          exit 1
