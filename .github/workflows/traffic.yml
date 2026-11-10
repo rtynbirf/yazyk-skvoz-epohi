@@ -1,6 +1,10 @@
-# Счётчик-автомат: дом сам считает гостей, без внешних сервисов и без секретов.
+# Счётчик-автомат: дом сам считает гостей, без внешних сервисов.
 # Раз в сутки спрашивает GitHub traffic API (скользящее окно 14 дней) и копит
 # историю по дням в traffic.json; сумма истории — счёт «за всё время наблюдения».
+# Токен: traffic-эндпоинт требует administration (read), которого у встроенного
+# GITHUB_TOKEN нет (проверено живым прогоном 2026-11-10: 403) — поэтому PAT живёт
+# в секрете репо HOUSE_TRAFFIC_TOKEN; fallback на github.token оставлен по
+# прецеденту cell-swarm (если у токена появятся права — секрет станет не нужен).
 # Коммит traffic.json обновляет Pages; push встроенным токеном не заводит других
 # воркфлоу (рекурсия Actions исключена), а Pages пересобирается штатно.
 # Идемпотентность: нет изменений — нет перехода, нет коммита.
@@ -25,10 +29,12 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: δ₁ — спросить дом о визитах (GitHub traffic API, окно 14 дней)
+        env:
+          GH_TOKEN: ${{ secrets.HOUSE_TRAFFIC_TOKEN || github.token }}
         run: |
           set -euo pipefail
           curl -sS --fail --retry 3 --retry-delay 5 \
-            -H "Authorization: Bearer ${{ github.token }}" \
+            -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             "${{ github.api_url }}/repos/${{ github.repository }}/traffic/views" \
