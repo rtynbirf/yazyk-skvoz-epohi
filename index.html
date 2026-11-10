@@ -15,7 +15,7 @@
 <link rel="canonical" href="https://rtynbirf.github.io/yazyk-skvoz-epohi/">
 <link rel="alternate" type="application/rss+xml" title="Язык сквозь эпохи · δ-лента переходов (ru)" href="https://rtynbirf.github.io/yazyk-skvoz-epohi/feed.xml" hreflang="ru">
 <link rel="alternate" type="application/rss+xml" title="Lingua per Aetates · Tira transitionum (la)" href="https://rtynbirf.github.io/yazyk-skvoz-epohi/feed-la.xml" hreflang="la">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230E1011'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle' fill='%23C6A85B' font-family='Georgia'%3Eδ%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='12'%20fill='%230E1011'/%3E%3Ctext%20x='32'%20y='44'%20font-size='36'%20text-anchor='middle'%20fill='%23C6A85B'%20font-family='Georgia'%3E%CE%B4%3C/text%3E%3C/svg%3E">
 <title>Язык сквозь эпохи · Дом-Автомат v21</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -70,15 +70,14 @@
   /* ---------- прогресс ---------- */
   .progress {
     position: fixed; top: 0; left: 0; height: 2px; width: 0;
-    background: linear-gradient(90deg, var(--gold-dim, #A88A4A), var(--gold));
+    background: linear-gradient(90deg, #A88A4A 0%, #C6A85B 100%);
     z-index: 120; transition: width .15s linear;
   }
 
   /* ---------- шапка-автомат ---------- */
   .machine {
     position: sticky; top: 0; z-index: 100;
-    background: rgba(14,16,17,.93);
-    backdrop-filter: blur(10px);
+    background: rgba(14,16,17,.96);
     border-bottom: 1px solid var(--line);
   }
   .machine-inner {
