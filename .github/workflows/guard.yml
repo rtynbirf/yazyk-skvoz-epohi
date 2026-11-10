@@ -20,6 +20,7 @@ on:
       - .nojekyll
       - scripts/check.py
       - .github/workflows/guard.yml
+      - .github/workflows/traffic.yml
   pull_request:
   workflow_dispatch: # по требованию Хозяина
 
@@ -48,3 +49,10 @@ jobs:
 
       - name: "δ₃ — ДКА-приёмка: инварианты артефактов, fail-closed"
         run: python3 scripts/check.py
+
+      - name: "δ₄ — воркфлоу дома: actionlint (поймал бы оба бага 2026-11-10)"
+        run: |
+          curl -sSL -o /tmp/actionlint.tar.gz \
+            https://github.com/rhysd/actionlint/releases/download/v1.7.7/actionlint_1.7.7_linux_amd64.tar.gz
+          tar -xzf /tmp/actionlint.tar.gz -C /tmp actionlint
+          /tmp/actionlint .github/workflows/*.yml
