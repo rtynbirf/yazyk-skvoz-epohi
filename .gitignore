@@ -1,2 +1,10 @@
 skills/
 node_modules/
+
+# личные материалы и внутренний мусор — в репозиторий не публикуются
+upload/
+tool-results/
+.env
+worklog.md
+__pycache__/
+*.pyc
