@@ -6,6 +6,15 @@
 <meta name="description" content="Язык сквозь эпохи: семь эпох, семь споров, семь шрифтов. Документ построен как детерминированный конечный автомат.">
 <meta property="og:title" content="Язык сквозь эпохи · Дом-Автомат v21">
 <meta property="og:description" content="От логоса Гераклита до предиктивного кодирования. Семь эпох × семь шрифтов × три слоя истории. Документ-автомат.">
+<meta property="og:url" content="https://rtynbirf.github.io/yazyk-skvoz-epohi/">
+<meta property="og:site_name" content="Язык сквозь эпохи">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:locale:alternate" content="la">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://rtynbirf.github.io/yazyk-skvoz-epohi/">
+<link rel="alternate" type="application/rss+xml" title="Язык сквозь эпохи · δ-лента переходов (ru)" href="https://rtynbirf.github.io/yazyk-skvoz-epohi/feed.xml" hreflang="ru">
+<link rel="alternate" type="application/rss+xml" title="Lingua per Aetates · Tira transitionum (la)" href="https://rtynbirf.github.io/yazyk-skvoz-epohi/feed-la.xml" hreflang="la">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230E1011'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle' fill='%23C6A85B' font-family='Georgia'%3Eδ%3C/text%3E%3C/svg%3E">
 <title>Язык сквозь эпохи · Дом-Автомат v21</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -300,6 +309,9 @@
     font-family: var(--mono); font-size: 10.5px; color: var(--faint);
     letter-spacing: .4px; line-height: 2;
   }
+  footer.colophon p.feeds a { color: var(--teal); text-decoration: none; }
+  footer.colophon p.feeds a:hover { color: var(--gold); text-decoration: underline; }
+  footer.colophon p.visits { color: var(--dim); font-size: 10px; }
 
   /* ---------- адаптив ---------- */
   @media (max-width: 720px) {
@@ -775,6 +787,10 @@
     Дизайн по трендам 2025–2026: scrollytelling, возврат серифов, WCAG 2.2 AA<br>
     Ноль зависимостей · один файл · работает без JavaScript и офлайн
   </p>
+  <p class="feeds">
+    δ-лента переходов: <a href="https://rtynbirf.github.io/yazyk-skvoz-epohi/feed.xml">по-русски</a> · <a href="https://rtynbirf.github.io/yazyk-skvoz-epohi/feed-la.xml">latine — Lingua per Aetates</a>
+  </p>
+  <p class="visits" id="visitsLine" hidden></p>
 </footer>
 
 <script>
@@ -951,6 +967,40 @@
       jump(a.getAttribute('data-rail'), 'jump');
     });
   });
+
+  /* ---------- счётчик: дом считает гостей ---------- */
+  /* Локальный визит — номер в этом браузере; общие totals пишет
+     счётчик-автомат дома в traffic.json (воркфлоу, без внешних сервисов).
+     Без JavaScript строки остаются скрытыми — документ честен и без неё. */
+  try {
+    var myVisits = 0;
+    try { myVisits = parseInt(localStorage.getItem('yse-visits') || '0', 10) || 0; } catch (e) {}
+    var countedThisSession = false;
+    try { countedThisSession = sessionStorage.getItem('yse-session') === '1'; } catch (e) {}
+    if (!countedThisSession) {
+      myVisits += 1;
+      try {
+        localStorage.setItem('yse-visits', String(myVisits));
+        sessionStorage.setItem('yse-session', '1');
+      } catch (e) {}
+    }
+    if (window.fetch) {
+      fetch('traffic.json', { cache: 'no-cache' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) {
+          var line = document.getElementById('visitsLine');
+          if (!line || !d || !d.total) return;
+          var t = d.total;
+          var parts = ['ваш визит — №' + myVisits + ' в этом браузере'];
+          if (typeof t.views === 'number') parts.push('визитов за всё время наблюдения — ' + t.views);
+          if (typeof t.uniques === 'number') parts.push('читателей (по дням) — ' + t.uniques);
+          if (d.updated) parts.push('дом считал ' + String(d.updated).slice(0, 10));
+          line.textContent = parts.join(' · ');
+          line.hidden = false;
+        })
+        .catch(function () { /* δ: символ не принят — тихий отказ */ });
+    }
+  } catch (e) { /* хранилище недоступно — чтению не мешает */ }
 })();
 </script>
 
