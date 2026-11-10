@@ -1,5 +1,10 @@
 # Язык сквозь эпохи · Дом-Автомат v21
 
+<div align="center">
+  <img src="banner.png" width="100%" alt="Штандарт yazyk-skvoz-epohi: обсидиан и расплавленное золото, кузня rtynbirf" />
+</div>
+
+
 [![Страж дома](https://github.com/rtynbirf/yazyk-skvoz-epohi/actions/workflows/guard.yml/badge.svg)](https://github.com/rtynbirf/yazyk-skvoz-epohi/actions/workflows/guard.yml)
 [![Счётчик-автомат](https://github.com/rtynbirf/yazyk-skvoz-epohi/actions/workflows/traffic.yml/badge.svg)](https://github.com/rtynbirf/yazyk-skvoz-epohi/actions/workflows/traffic.yml)
 
