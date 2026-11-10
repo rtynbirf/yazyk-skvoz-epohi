@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xml:lang="ru">
+  <channel>
+    <title>Язык сквозь эпохи · δ-лента переходов</title>
+    <link>https://rtynbirf.github.io/yazyk-skvoz-epohi/</link>
+    <description>Семиэпохальное эссе о языке, построенное как детерминированный конечный автомат. Лента — те же десять состояний: δ(qᵢ, a) → qⱼ. Подписка = чтение ленты переходов.</description>
+    <language>ru</language>
+    <copyright>© 2026 rtynbirf · Полимат-Универсум</copyright>
+    <lastBuildDate>Tue, 10 Nov 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link rel="self" type="application/rss+xml" href="https://rtynbirf.github.io/yazyk-skvoz-epohi/feed.xml"/>
+    <atom:link rel="alternate" type="application/rss+xml" hreflang="la" href="https://rtynbirf.github.io/yazyk-skvoz-epohi/feed-la.xml"/>
+
+    <item>
+      <title>q₀ · Обложка — история одной неразрешённой загадки</title>
+      <link>https://rtynbirf.github.io/yazyk-skvoz-epohi/#cover</link>
+      <guid isPermaLink="true">https://rtynbirf.github.io/yazyk-skvoz-epohi/#cover</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 +0000</pubDate>
+      <description>От логоса Гераклита до предиктивного кодирования Фристона. Не история развития: история того, как мы называли тайну разными словами, не понимая, что это одна и та же тайна.</description>
+    </item>
+    <item>
+      <title>q₁ · Античность: логос и природа имени</title>
+      <link>https://rtynbirf.github.io/yazyk-skvoz-epohi/#e1</link>
+      <guid isPermaLink="true">https://rtynbirf.github.io/yazyk-skvoz-epohi/#e1</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Если имя не верно — существует ли вещь? Спор Кратила и Гермогена у Платона, четырёхзвенная цепь Аристотеля, софисты и исключённые из логоса.</description>
+    </item>
+    <item>
+      <title>q₂ · Средние века: знак, отпечаток и воля Творца</title>
+      <link>https://rtynbirf.github.io/yazyk-skvoz-epohi/#e2</link>
+      <guid isPermaLink="true">https://rtynbirf.github.io/yazyk-skvoz-epohi/#e2</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Если Бог не говорит на латыни — существует ли Он? Слово как отпечаток воли Творца, грамматика как богословие, инквизиция и языки, оставшиеся за границей дозволенного.</description>
+    </item>
+    <item>
+      <title>q₃ · Раннее Новое время: от голоса к разуму</title>
+      <link>https://rtynbirf.github.io/yazyk-skvoz-epohi/#e3</link>
+      <guid isPermaLink="true">https://rtynbirf.github.io/yazyk-skvoz-epohi/#e3</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Можно вычислить «кота», но нельзя вычислить мурлыканье. Универсальная грамматика Пор-Рояля, рациональный порядок идей и то, что в него не поместилось.</description>
+    </item>
+    <item>
+      <title>q₄ · Просвещение: чувство, разум и происхождение речи</title>
+      <link>https://rtynbirf.github.io/yazyk-skvoz-epohi/#e4</link>
+      <guid isPermaLink="true">https://rtynbirf.github.io/yazyk-skvoz-epohi/#e4</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Прежде чем доказывать — человек пел. Споры о происхождении языка: Руссо, Гердер, королевские академии и запрет на сам вопрос.</description>
+    </item>
+    <item>
+      <title>q₅ · XIX век: родство языков и дух народа</title>
+      <link>https://rtynbirf.github.io/yazyk-skvoz-epohi/#e5</link>
+      <guid isPermaLink="true">https://rtynbirf.github.io/yazyk-skvoz-epohi/#e5</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Внутренняя форма — окно, через которое народ смотрит на мир. Джонс и санскрит, Бопп, заложивший основы сравнительного метода, Гумбольдт и тень империй.</description>
+    </item>
+    <item>
+      <title>q₆ · XX век: знак, система и порождающее устройство</title>
+      <link>https://rtynbirf.github.io/yazyk-skvoz-epohi/#e6</link>
+      <guid isPermaLink="true">https://rtynbirf.github.io/yazyk-skvoz-epohi/#e6</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Смысл живёт не в слове, а между словами. Соссюр, структурализм, иерархия Хомского, ALPAC и то, кого язык продолжали не слышать.</description>
+    </item>
+    <item>
+      <title>q₇ · Конец XX — XXI век: тело, мозг и предсказание</title>
+      <link>https://rtynbirf.github.io/yazyk-skvoz-epohi/#e7</link>
+      <guid isPermaLink="true">https://rtynbirf.github.io/yazyk-skvoz-epohi/#e7</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Стихотворение максимизирует ошибку предсказания — и в этом его правда. Язык как тело и мозг, предиктивное кодирование и вопрос о том, кто говорит в машине.</description>
+    </item>
+    <item>
+      <title>q₈ · Семь нерешённых проблем</title>
+      <link>https://rtynbirf.github.io/yazyk-skvoz-epohi/#after</link>
+      <guid isPermaLink="true">https://rtynbirf.github.io/yazyk-skvoz-epohi/#after</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Каждая эпоха решала свою задачу и умножала загадки. Послесловие собирает семь вопросов, на которые у человечества до сих пор нет ответа.</description>
+    </item>
+    <item>
+      <title>q₉ · Дом как машина — ω ∈ L(M)</title>
+      <link>https://rtynbirf.github.io/yazyk-skvoz-epohi/#automaton</link>
+      <guid isPermaLink="true">https://rtynbirf.github.io/yazyk-skvoz-epohi/#automaton</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Документ построен как детерминированный конечный автомат M = (Q, Σ, δ, q₀, F): состояния — разделы, символы — ваши действия. Прочитаете все семь эпох — ω ∈ L(M), язык принят.</description>
+    </item>
+  </channel>
+</rss>
