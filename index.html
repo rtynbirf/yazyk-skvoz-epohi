@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="ru" data-layer="1">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Язык сквозь эпохи: семь эпох, семь споров, семь шрифтов. Документ построен как детерминированный конечный автомат.">
+<meta property="og:title" content="Язык сквозь эпохи · Дом-Автомат v21">
+<meta property="og:description" content="От логоса Гераклита до предиктивного кодирования. Семь эпох × семь шрифтов × три слоя истории. Документ-автомат.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230E1011'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle' fill='%23C6A85B' font-family='Georgia'%3Eδ%3C/text%3E%3C/svg%3E">
+<title>Язык сквозь эпохи · Дом-Автомат v21</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,600;1,400&family=Vollkorn:ital,wght@0,400;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    /* Палитра: все пары проверены, контраст ≥ 4.5:1 (WCAG 2.2 AA) */
+    --bg: #0E1011;
+    --surface: #16181B;
+    --surface-2: #1C1F23;
+    --text: #D8D4CC;      /* 12.9:1 на bg */
+    --dim: #A8A29A;       /* 7.5:1 на bg */
+    --faint: #918C84;     /* 5.7:1 на bg */
+    --gold: #C6A85B;      /* 8.3:1 на bg */
+    --teal: #8FB8B0;      /* 8.8:1 на bg */
+    --red: #CE6B6B;       /* 5.4:1 на bg */
+    --line: #26292D;
+    --sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- фокус: WCAG 2.2 (2px, ≥3:1) ---------- */
+  :focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  .skip-link {
+    position: absolute; left: -999px; top: 8px; z-index: 200;
+    background: var(--surface-2); color: var(--gold);
+    padding: 10px 16px; font-size: 13px; border: 1px solid var(--gold);
+  }
+  .skip-link:focus { left: 8px; }
+
+  /* ---------- прогресс ---------- */
+  .progress {
+    position: fixed; top: 0; left: 0; height: 2px; width: 0;
+    background: linear-gradient(90deg, var(--gold-dim, #A88A4A), var(--gold));
+    z-index: 120; transition: width .15s linear;
+  }
+
+  /* ---------- шапка-автомат ---------- */
+  .machine {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(14,16,17,.93);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .machine-inner {
+    max-width: 1060px; margin: 0 auto; padding: 10px 20px;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  }
+  .machine-brand {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--faint); white-space: nowrap;
+  }
+  .machine-state {
+    font-family: var(--mono); font-size: 12px; color: var(--gold);
+    min-width: 200px; letter-spacing: .4px;
+  }
+  .machine-delta {
+    font-family: var(--mono); font-size: 11px; color: var(--faint);
+    flex: 1 1 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .machine-controls { display: flex; gap: 6px; align-items: center; }
+  .btn {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .5px;
+    background: transparent; color: var(--dim);
+    border: 1px solid var(--line); border-radius: 3px;
+    padding: 5px 10px; cursor: pointer; transition: color .2s, border-color .2s;
+  }
+  .btn:hover { color: var(--gold); border-color: var(--gold); }
+  .btn[aria-pressed="true"] { color: var(--bg); background: var(--gold); border-color: var(--gold); font-weight: 600; }
+
+  /* ---------- ghost rail ---------- */
+  .rail {
+    position: fixed; right: 18px; top: 50%; transform: translateY(-50%);
+    display: none; flex-direction: column; gap: 4px; z-index: 90;
+    opacity: .3; transition: opacity .3s;
+  }
+  .rail:hover, .rail:focus-within { opacity: 1; }
+  @media (min-width: 1280px) { .rail { display: flex; } }
+  .rail a {
+    font-family: var(--mono); font-size: 10px; color: var(--faint);
+    text-decoration: none; padding: 2px 8px; border-right: 2px solid transparent;
+    text-align: right; transition: color .2s, border-color .2s;
+  }
+  .rail a:hover { color: var(--gold); }
+  .rail a.active { color: var(--gold); border-right-color: var(--gold); }
+
+  /* ---------- лента переходов ---------- */
+  .tape {
+    position: fixed; left: 16px; bottom: 14px; z-index: 90;
+    display: none; flex-direction: column-reverse; gap: 2px;
+    font-family: var(--mono); font-size: 10px; color: var(--faint);
+    pointer-events: none;
+  }
+  @media (min-width: 1100px) { .tape { display: flex; } }
+  .tape span { opacity: .9; }
+  .tape span:nth-child(2) { opacity: .55; }
+  .tape span:nth-child(3) { opacity: .35; }
+  .tape span:nth-child(4) { opacity: .2; }
+  .tape span:nth-child(5) { opacity: .1; }
+  .tape .accepted-line { color: var(--gold); opacity: 1; font-weight: 600; }
+
+  /* ---------- обложка ---------- */
+  .cover {
+    min-height: 92vh; display: flex; flex-direction: column;
+    justify-content: center; align-items: center; text-align: center;
+    padding: 90px 24px 60px;
+  }
+  .cover-label {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 30px;
+  }
+  .cover h1 {
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: clamp(34px, 5.4vw, 58px); font-weight: 400;
+    line-height: 1.18; margin-bottom: 22px; max-width: 760px;
+  }
+  .cover h1 em { font-style: italic; color: var(--gold); }
+  .cover-sub {
+    font-family: 'Cormorant', Georgia, serif; font-style: italic;
+    font-size: clamp(17px, 1.8vw, 21px); color: var(--dim);
+    max-width: 560px; line-height: 1.7; margin-bottom: 34px;
+  }
+  .automaton-def {
+    font-family: var(--mono); font-size: 11.5px; color: var(--faint);
+    line-height: 2; border: 1px solid var(--line); border-radius: 4px;
+    padding: 14px 22px; margin-bottom: 36px; text-align: left;
+  }
+  .automaton-def b { color: var(--gold); font-weight: 600; }
+  .cover-formula { font-size: 13px; color: var(--dim); }
+  .cover-formula b { color: var(--text); font-weight: 600; }
+  .start-btn {
+    display: inline-block; font-family: var(--mono); font-size: 12px;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--gold); text-decoration: none;
+    border: 1px solid var(--gold); border-radius: 2px; padding: 13px 34px;
+    transition: background .25s, color .25s;
+  }
+  .start-btn:hover { background: var(--gold); color: var(--bg); }
+  .cover-kbd {
+    margin-top: 26px; font-family: var(--mono); font-size: 10px;
+    color: var(--faint); line-height: 1.9;
+  }
+  .cover-kbd kbd {
+    border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 3px;
+    padding: 1px 6px; font-family: inherit; color: var(--dim);
+  }
+
+  /* ---------- общий каркас разделов ---------- */
+  section.state { max-width: 720px; margin: 0 auto; padding: 84px 24px 40px; }
+  .state-mark {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 10px;
+  }
+  .state-mark .qn { color: var(--faint); }
+  h2.epoch-title {
+    font-size: clamp(26px, 3.4vw, 36px); font-weight: 600;
+    line-height: 1.25; margin-bottom: 6px;
+  }
+  .epoch-period {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 1px;
+    color: var(--faint); padding-bottom: 22px; margin-bottom: 30px;
+    border-bottom: 1px solid var(--line);
+  }
+  .epoch-body { font-size: clamp(16.5px, .35vw + 15.5px, 18.5px); line-height: 1.9; color: var(--dim); }
+  .epoch-body p { margin-bottom: 1.3em; }
+  .epoch-body strong { color: var(--text); font-weight: 600; }
+
+  /* семь шрифтов семи эпох (все — с полной кириллицей) */
+  [data-q="q1"] .epoch-title, [data-q="q1"] .epoch-body { font-family: 'Cormorant', Georgia, serif; }
+  [data-q="q2"] .epoch-title, [data-q="q2"] .epoch-body { font-family: 'Vollkorn', Georgia, serif; }
+  [data-q="q3"] .epoch-title, [data-q="q3"] .epoch-body { font-family: 'EB Garamond', Georgia, serif; }
+  [data-q="q4"] .epoch-title, [data-q="q4"] .epoch-body { font-family: 'Old Standard TT', 'Times New Roman', serif; }
+  [data-q="q5"] .epoch-title, [data-q="q5"] .epoch-body { font-family: 'Playfair Display', Georgia, serif; }
+  [data-q="q6"] .epoch-title, [data-q="q6"] .epoch-body { font-family: 'PT Serif', Georgia, serif; }
+  [data-q="q7"] .epoch-title, [data-q="q7"] .epoch-body { font-family: 'Inter', system-ui, sans-serif; }
+  [data-q="q4"] .epoch-title { font-weight: 700; }
+
+  /* ---------- эпиграф и афоризм ---------- */
+  .epigraph {
+    font-style: italic; color: var(--gold); border-left: 2px solid var(--gold);
+    padding: 6px 0 6px 18px; margin-bottom: 34px; font-size: 1.02em; line-height: 1.75;
+  }
+  .aforism {
+    text-align: center; font-style: italic; color: var(--text);
+    font-size: 1.06em; line-height: 1.8; margin: 42px auto; max-width: 480px;
+  }
+  .aforism::before { content: '— '; color: var(--gold); }
+  .aforism::after { content: ' —'; color: var(--gold); }
+
+  /* ---------- слои: глобус и тень ---------- */
+  .globe, .shadow { display: none; }
+  [data-layer="1"] .globe, [data-layer="2"] .globe,
+  [data-layer="2"] .shadow { display: block; }
+  .globe {
+    background: rgba(143,184,176,.05); border-left: 2px solid var(--teal);
+    padding: 16px 20px; margin: 30px 0; font-size: .95em;
+  }
+  .globe-tag, .shadow-tag {
+    font-family: var(--mono); font-size: 9.5px; letter-spacing: 2px;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .globe-tag { color: var(--teal); }
+  .globe p { color: var(--dim); margin-bottom: .7em; }
+  .shadow {
+    background: rgba(206,107,107,.05); border-left: 2px solid var(--red);
+    padding: 16px 20px; margin: 30px 0; font-size: .95em;
+  }
+  .shadow-tag { color: var(--red); }
+  .shadow p { color: var(--dim); margin-bottom: .7em; }
+
+  /* ---------- противоречие и нерешённое ---------- */
+  .contradiction {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 22px;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 4px;
+    padding: 20px 22px; margin: 34px 0;
+  }
+  .col-label {
+    font-family: var(--mono); font-size: 9.5px; letter-spacing: 2px;
+    text-transform: uppercase; margin-bottom: 9px; font-weight: 600;
+  }
+  .thesis .col-label { color: var(--gold); }
+  .antithesis .col-label { color: var(--red); }
+  .thesis { font-size: .92em; line-height: 1.75; color: var(--text); }
+  .antithesis { font-size: .92em; line-height: 1.75; color: var(--dim); border-left: 1px dashed var(--line); padding-left: 18px; }
+  .unresolved {
+    border: 1px solid rgba(198,168,91,.35); border-radius: 4px;
+    padding: 16px 20px; margin: 26px 0 8px; font-style: italic;
+    font-size: .95em; color: var(--dim); line-height: 1.75;
+  }
+  .unresolved b {
+    font-family: var(--mono); font-style: normal; font-weight: 600;
+    font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--gold); display: block; margin-bottom: 7px;
+  }
+
+  /* ---------- послесловие ---------- */
+  .problems p { margin-bottom: 1.25em; }
+  .problems b { color: var(--gold); font-weight: 600; }
+
+  /* ---------- автомат: таблица и диаграмма ---------- */
+  .automaton-math {
+    font-family: var(--mono); font-size: 12.5px; color: var(--dim);
+    background: var(--surface); border: 1px solid var(--line); border-radius: 4px;
+    padding: 18px 22px; margin: 30px 0; line-height: 2.1; overflow-x: auto;
+  }
+  .automaton-math b { color: var(--gold); font-weight: 600; }
+  .dtable { width: 100%; border-collapse: collapse; margin: 26px 0; font-family: var(--mono); font-size: 12px; }
+  .dtable th, .dtable td {
+    border: 1px solid var(--line); padding: 8px 10px; text-align: center; color: var(--dim);
+  }
+  .dtable th { color: var(--gold); font-weight: 600; background: var(--surface); }
+  .dtable td:first-child { color: var(--text); }
+  .dtable td.acc { color: var(--gold); font-weight: 600; }
+  .diagram-wrap { overflow-x: auto; margin: 30px 0; border: 1px solid var(--line); border-radius: 4px; padding: 14px; background: var(--surface); }
+  .font-note { font-size: .93em; color: var(--dim); }
+  .font-note td, .font-note th { padding: 6px 10px; }
+  .seal {
+    display: none; margin: 36px auto 6px; max-width: 340px; text-align: center;
+    border: 2px double var(--gold); border-radius: 6px; padding: 18px 22px;
+  }
+  body.accepted .seal { display: block; }
+  .seal .seal-title { font-family: var(--mono); font-size: 11px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; }
+  .seal .seal-sub { font-family: var(--mono); font-size: 11px; color: var(--dim); }
+
+  footer.colophon {
+    max-width: 720px; margin: 0 auto; padding: 40px 24px 70px;
+    border-top: 1px solid var(--line); text-align: center; margin-top: 40px;
+  }
+  footer.colophon p {
+    font-family: var(--mono); font-size: 10.5px; color: var(--faint);
+    letter-spacing: .4px; line-height: 2;
+  }
+
+  /* ---------- адаптив ---------- */
+  @media (max-width: 720px) {
+    .contradiction { grid-template-columns: 1fr; }
+    .antithesis { border-left: none; border-top: 1px dashed var(--line); padding: 14px 0 0; }
+    .machine-state { min-width: 0; flex-basis: 100%; order: -1; }
+    .machine-delta { display: none; }
+    section.state { padding-top: 64px; }
+  }
+
+  /* ---------- печать: раскрыть всё, убрать хром ---------- */
+  @media print {
+    body { background: #fff; color: #16181B; }
+    .machine, .rail, .tape, .progress, .start-btn, .cover-kbd { display: none !important; }
+    .globe, .shadow { display: block !important; }
+    .globe { background: #F2F7F6; }
+    .shadow { background: #FBF1F1; }
+    .contradiction { background: #F5F4F1; }
+    section.state { page-break-before: always; padding: 20px 0; }
+    .cover { min-height: auto; }
+    [data-q="q1"] .epoch-body, [data-q="q1"] .epoch-title { font-family: 'Cormorant', Georgia, serif; }
+    .epoch-body, .state h2 { color: #16181B; }
+    .epoch-body p { color: #2E2C29; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#e1">Перейти к тексту</a>
+<div class="progress" id="progress"></div>
+
+<!-- ============ ШАПКА-АВТОМАТ ============ -->
+<header class="machine">
+  <div class="machine-inner">
+    <div class="machine-brand">δ: Q×Σ→Q · дом-автомат</div>
+    <div class="machine-state" id="stateView">q₀ · Обложка · Вступление</div>
+    <div class="machine-delta" id="deltaView">машина ждёт первого символа…</div>
+    <div class="machine-controls">
+      <button class="btn" id="btnPrev" title="Предыдущее состояние (←)">◀ prev</button>
+      <button class="btn" id="btnNext" title="Следующее состояние (→)">next ▶</button>
+      <button class="btn" id="btnLayer" aria-pressed="true" title="Слои истории (G)">слой: Канон+Глобус</button>
+    </div>
+  </div>
+</header>
+
+<nav class="rail" id="rail" aria-label="Состояния автомата">
+  <a href="#cover" data-rail="q0">q₀ обложка</a>
+  <a href="#e1" data-rail="q1">q₁ античность</a>
+  <a href="#e2" data-rail="q2">q₂ средневековье</a>
+  <a href="#e3" data-rail="q3">q₃ новое время</a>
+  <a href="#e4" data-rail="q4">q₄ просвещение</a>
+  <a href="#e5" data-rail="q5">q₅ xix век</a>
+  <a href="#e6" data-rail="q6">q₆ xx век</a>
+  <a href="#e7" data-rail="q7">q₇ xxi век</a>
+  <a href="#after" data-rail="q8">q₈ послесловие</a>
+  <a href="#automaton" data-rail="q9">q₉ автомат</a>
+</nav>
+
+<div class="tape" id="tape" aria-hidden="true"></div>
+
+<!-- ============ q0 · ОБЛОЖКА + ВСТУПЛЕНИЕ ============ -->
+<section class="state cover" id="cover" data-q="q0">
+  <div class="cover-label">семь эпох · семь споров · семь шрифтов</div>
+  <h1>Язык сквозь эпохи:<br><em>история одной неразрешённой загадки</em></h1>
+  <p class="cover-sub">От логоса Гераклита до предиктивного кодирования Фристона — как человечество две с половиной тысячи лет пытается понять, что такое язык, и почему каждый ответ порождает два новых вопроса.</p>
+  <div class="automaton-def">
+    <span class="cover-formula">M = (<b>Q</b>, <b>Σ</b>, δ, <b>q₀</b>, <b>F</b>)</span><br>
+    <b>Q</b> = {"q₀", "q₁" … "q₉"} — состояния: обложка, семь эпох, послесловие, автомат<br>
+    <b>Σ</b> = {scroll, next, prev, top, end, globe, shadow} — ваши действия<br>
+    δ — таблица переходов (показана в состоянии q₉) · <b>q₀</b> — вы здесь · <b>F</b> = {"q₉"}
+  </div>
+  <a class="start-btn" href="#e1" data-jump="q1">начать чтение → q₁</a>
+  <p class="cover-kbd">
+    <kbd>→</kbd> next · <kbd>←</kbd> prev · <kbd>1–7</kbd> эпохи · <kbd>0</kbd> обложка · <kbd>8</kbd> послесловие · <kbd>9</kbd> автомат<br>
+    <kbd>G</kbd> добавить слой · <kbd>T</kbd> убрать слой
+  </p>
+</section>
+
+<section class="state" data-q="q0" aria-label="Вступление">
+  <div class="epoch-body">
+    <p style="font-style:italic; color:var(--gold); border-left:2px solid var(--gold); padding-left:18px;">Не история развития. История того, как мы называли тайну разными словами, не понимая, что это одна и та же тайна.</p>
+    <p>Каждый из нас пользуется языком каждое мгновение бодрствования — и всё же вопрос о том, что такое язык, остаётся открытым уже две с половиной тысячи лет. Античные философы спрашивали: даны ли имена от природы вещей или установлены людьми по соглашению? Средневековые схоласты спрашивали: указывают ли слова на вещи в мире или лишь побуждают душу обратиться к знанию, которое она уже хранит? Философы Нового времени спрашивали: искажает ли язык мысль — и можно ли построить язык, свободный от этой искажённости?</p>
+    <p>Просвещение спросило: как зародилась речь — из крика нужды или из пения страсти? XIX век обнаружил родство языков и спросил: создаёт ли язык мир, в котором живёт народ? XX век объявил язык системой знаков, а затем — врождённым устройством мозга. Наше время вернуло языку его тело и одновременно превратило его в вычислительный процесс.</p>
+    <p>Этот документ — попытка синтезировать все эти голоса. Он построен не как каталог мнений, а как история одного и того же вопроса, который каждая эпоха формулирует заново. В каждой эпохе три слоя: <strong style="color:var(--text)">канон</strong> — признанные фигуры и идеи; <strong style="color:var(--teal)">глобус</strong> — неевропейские параллели и голоса, остававшиеся на полях; <strong style="color:var(--red)">тень</strong> — язык как инструмент власти и исключения. И главное — нерешённые противоречия, которые каждая эпоха наследует от предыдущей и передаёт следующей.</p>
+    <p>Прогресс в истории языковой мысли — это не движение к истине. Это умножение парадоксов.</p>
+  </div>
+</section>
+
+<!-- ============ q1 · АНТИЧНОСТЬ ============ -->
+<section class="state epoch" id="e1" data-q="q1" aria-label="Эпоха I">
+  <div class="state-mark">Эпоха I <span class="qn">· q₁</span> · противоречие: природа vs условность</div>
+  <h2 class="epoch-title">Античность: логос и природа имени</h2>
+  <div class="epoch-period">VIII в. до н.э. — V в. н.э. · шрифт: Cormorant</div>
+  <div class="epoch-body">
+    <p class="epigraph">Если имя не верно — существует ли вещь?</p>
+    <p>Древние эллины полагали, что речь не есть нечто произвольное: она либо тянется от самой природы вещей, либо устанавливается людьми через соглашение. В диалоге Платона <strong>«Кратил»</strong> Сократ обсуждает с Кратилом и Гермогеном, верна ли природа имён или они устанавливаются соглашением. Кратил держится натуралистической позиции: каждое имя дано вещи по её естеству, как отпечаток содержит образ. Гермоген представляет конвенционализм: имена — произвольные знаки, которые люди наложили на вещи по своему усмотрению, как клеймо на сосуд. Сократ не даёт спору окончательного разрешения, но показывает: если имена природны, почему одна вещь называется по-разному в разных языках? Если условны — почему мы вообще понимаем друг друга?</p>
+    <p>Гераклит ещё раньше уподобил логос — общий для всех — вечному огню, мерно вспыхивающему и угасающему: не слово, а первоосновное начало, которому подчинено всё сущее. <strong>Аристотель</strong> в «Об истолковании» выстроил четырёхзвенную цепочку: вещь → состояние души → звучащая речь → письмо; звучания — знаки состояний души, письмена — знаки звучаний. Аффекты души у всех людей те же, звуки различны у народов. <strong>Стоики</strong> различили <em>лектон</em> — высказываемое содержание — от самого звука: голос пропадает, лектон остаётся. Риторика учила убеждать, диалектика — вести спор вопросами; обе опирались на топос, общие места доводов. Слово было не передачей мысли, а действием, меняющим душу слушателя, — и софисты первыми поняли, что оно может быть сильнее меча.</p>
+
+    <div class="globe">
+      <div class="globe-tag">Глобус · неевропейская параллель</div>
+      <p><strong>Панини (IV в. до н.э.)</strong> — автор «Аштадхьяи», первой известной формальной грамматики санскрита. Почти четыре тысячи правил описывают фонологию, морфологию и синтаксис с точностью, которую европейская традиция достигла лишь два тысячелетия спустя; его метаправила предвосхитили идеи порождающей грамматики.</p>
+    </div>
+
+    <div class="shadow">
+      <div class="shadow-tag">Тень · власть и исключение</div>
+      <p>В Афинах V века до н.э. свободная речь была привилегией граждан-мужчин: рабы, женщины и метэки не имели права голоса. Софисты преподавали риторику как <em>технэ</em> — искусство убеждения, доступное тем, кто мог заплатить. Язык с самого начала был не только философской проблемой, но и инструментом власти.</p>
+    </div>
+
+    <div class="contradiction">
+      <div class="thesis">
+        <div class="col-label">Тезис · Платон, Кратил</div>
+        Имена отражают природу вещей. Правильное имя раскрывает сущность; язык участвует в космическом порядке логоса.
+      </div>
+      <div class="antithesis">
+        <div class="col-label">Антитезис · Аристотель, Гермоген</div>
+        Имена условны. Связь слова и вещи установлена людьми произвольно; аффекты души общи, но звуки различны.
+      </div>
+    </div>
+    <div class="unresolved"><b>Неразрешённое · уходит в эпоху II</b>
+      Если имена условны, почему язык раскрывает истину? Если природны — почему каждый язык видит вещь по-своему? И главное: где живёт смысл — в слове, в душе говорящего или в самой вещи?
+    </div>
+  </div>
+</section>
+
+<!-- ============ q2 · СРЕДНЕВЕКОВЬЕ ============ -->
+<section class="state epoch" id="e2" data-q="q2" aria-label="Эпоха II">
+  <div class="state-mark">Эпоха II <span class="qn">· q₂</span> · противоречие: откровение vs интроспекция</div>
+  <h2 class="epoch-title">Средние века: знак, отпечаток и воля Творца</h2>
+  <div class="epoch-period">V — XV вв. · шрифт: Vollkorn</div>
+  <div class="epoch-body">
+    <p class="epigraph">Если Бог не говорит на латыни — существует ли Он?</p>
+    <p>Когда христианское откровение стало главной опорой мысли, вопрос о языке переместился из сферы природы в сферу воли. <strong>Блаженный Августин</strong> в трактате «О учителе» положил: слова суть знаки, указывающие на вещи, но сами по себе они лишь побуждают душу обратиться к тому, что она уже знает. Никто не учит через слова, если душа не хранит внутри того, к чему слова лишь прикасаются. Это сделало средневековую мысль глубоко интроспективной: язык — движение души, ищущей вещь в самой себе. Августин поместил истину внутрь — но тогда откуда в языке Бог?</p>
+    <p><strong>Схоласты</strong> построили грандиозное учение о знаке: знак есть то, что сверх своей собственной формы понуждает душу к познанию иного. Фома Аквинский разделил знаки естественные — следы вещей, как дым от огня, — и намеренные, установленные для указания. <strong>Модисты</strong> развили учение о <em>modi significandi</em>, способах означивания, веря, что грамматические категории отражают свойства вещей и структура латинской речи повторяет устройство бытия. Гениальная — и обречённая идея: у каждого языка своя структура. <strong>Спор об универсалиях</strong> расколол школы: реалисты утверждали, что род и вид имеют подлинное бытие; номиналисты, от Росцелина до Оккама, отвечали, что реальны лишь единичные вещи, а общие имена — лишь <em>flatus vocis</em>, дыхание голоса. Оккам победил логически — но интуиция упрямо говорит, что «белизна» есть нечто большее, чем сумма белых вещей.</p>
+
+    <div class="globe">
+      <div class="globe-tag">Глобус · неевропейские параллели</div>
+      <p><strong>Сюй Шэнь (ок. 100 г. н.э.)</strong> — автор «Шоувэнь цзецзы», первого этимологического словаря иероглифов: 9 353 знака, классифицированных по 540 ключам. Основа китайской лингвистической традиции, развившейся независимо от европейской.</p>
+      <p><strong>Хильдегарда Бингенская (XII в.)</strong> — аббатиса, создательница <em>Lingua Ignota</em>: около тысячи искусственных слов с латинскими толкованиями. Первый известный искусственный язык — попытка построить речь, не принадлежащую ни одному народу.</p>
+    </div>
+
+    <div class="shadow">
+      <div class="shadow-tag">Тень · власть и исключение</div>
+      <p>Латынь стала инструментом подавления народных языков. В 1079 году папа Григорий VII отлучил императора Генриха IV в споре об инвеституре — конфликт, где язык церкви был оружием. В 1328 году Оккам бежал из Авиньона, спасаясь от преследования за ересь. Спор об универсалиях никогда не был только академическим.</p>
+    </div>
+
+    <div class="contradiction">
+      <div class="thesis">
+        <div class="col-label">Тезис · Августин, модисты</div>
+        Язык пробуждает внутреннее знание. Грамматика отражает структуру сотворённой реальности; знак ведёт душу к вещи.
+      </div>
+      <div class="antithesis">
+        <div class="col-label">Антитезис · Оккам, номиналисты</div>
+        Слова — звуки. Общие понятия существуют только в уме; реальны лишь единичные вещи.
+      </div>
+    </div>
+    <div class="unresolved"><b>Неразрешённое · уходит в эпоху III</b>
+      Если язык пробуждает внутреннее — откуда это внутреннее знание? Если слова — только звуки, как они создают смысл? Как грамматика может отражать бытие, если каждый язык видит его по-своему?
+    </div>
+  </div>
+</section>
+
+<!-- ============ q3 · РАННЕЕ НОВОЕ ВРЕМЯ ============ -->
+<section class="state epoch" id="e3" data-q="q3" aria-label="Эпоха III">
+  <div class="state-mark">Эпоха III <span class="qn">· q₃</span> · противоречие: мысль vs выражение</div>
+  <h2 class="epoch-title">Раннее Новое время: от голоса к разуму</h2>
+  <div class="epoch-period">XV — XVII вв. · шрифт: EB Garamond</div>
+  <div class="epoch-body">
+    <p class="epigraph">Можно вычислить «кота», но нельзя вычислить мурлыканье.</p>
+    <p>Рукопечатная книга лишила латынь монополии на учёную речь. <strong>Лоренцо Валла</strong> доказал, что изящная латынь Цицерона не принадлежит церкви, и что каждый народ вправе говорить и мыслить на своём наречии. <strong>Этьен Доле</strong> перевёл Платона на французский и заявил: философии не нужна латынь, если мысль ясна. Началось великое расслоение: язык стал одновременно предметом национальной гордости и инструментом познания всеобщего.</p>
+    <p><strong>Фрэнсис Бэкон</strong> в «Новом Органоне» провозгласил: слова искажают мысль, навязывая разуму ложные сходства, — «идолы площади», заблуждения, коренящиеся в самих словах. Чтобы познать природу, нужно молчать и смотреть. Но как молчать тому, кто — говорящее существо? <strong>Декарт</strong> согласился наполовину: мысль может быть ясной, слова — нет; они расплывчаты и зависят от других людей. Отсюда его уход к математике — языку однозначных символов, который, впрочем, тоже язык, только более жёсткий. <strong>Лейбниц</strong> мечтал о <em>characteristica universalis</em>: искусственном языке, где каждый знак соответствует простой идее, и всякий спор решается исчислением — <em>Calculemus!</em> Из этой утопии выросла формальная логика; только истинный смысл умеет из неё утекать. <strong>Локк</strong> в «Опыте о человеческом разумении» поставил точку над вопросом: слова — чувственно воспринимаемые знаки идей в голове говорящего; они не обозначают вещи непосредственно, и общность языка покоится на произвольной связи звуков с идеями. Локк первым разделил значение слова и вещь — и навсегда изменил вопрос о языке.</p>
+
+    <div class="globe">
+      <div class="globe-tag">Глобус · неевропейская параллель</div>
+      <p><strong>Ибн Рушд (XII в.)</strong> — Кордова. Комментарии к Аристотелю, переведённые с арабского на латынь, вернули Европе её собственного философа: «латинские аверроисты» строили Новое время на текстах, прошедших через Багдад и Кордову. Языковая цепочка Платон → арабский → латынь — памятник тому, что мысль не знает национальных границ.</p>
+    </div>
+
+    <div class="shadow">
+      <div class="shadow-tag">Тень · власть и исключение</div>
+      <p>В 1546 году Этьен Доле был сожжён на площади Мобер в Париже — формально за ересь, по сути за вольную печатную речь. В 1559 году создан «Индекс запрещённых книг»: слово впервые поставлено под систематический государственный надзор. Печать дала языку свободу — и тут же выстроила для неё клетку.</p>
+    </div>
+
+    <div class="contradiction">
+      <div class="thesis">
+        <div class="col-label">Тезис · Бэкон</div>
+        Язык искажает мысль. Истинное познание требует молчаливого созерцания природы, свободного от «идолов площади».
+      </div>
+      <div class="antithesis">
+        <div class="col-label">Антитезис · Декарт, Лейбниц</div>
+        Мысль может быть ясной. Если естественный язык неясен, нужен переход к однозначным символам — математике или универсальной характеристике.
+      </div>
+    </div>
+    <div class="unresolved"><b>Неразрешённое · уходит в эпоху IV</b>
+      Если язык — враг мысли, как мы вообще мыслим? Если мысль независима от языка, почему разные языки создают разные картины мира? Существует ли вполне ясная идея, не обложенная словами?
+    </div>
+  </div>
+</section>
+
+<!-- ============ q4 · ПРОСВЕЩЕНИЕ ============ -->
+<section class="state epoch" id="e4" data-q="q4" aria-label="Эпоха IV">
+  <div class="state-mark">Эпоха IV <span class="qn">· q₄</span> · противоречие: развитие vs врождённость</div>
+  <h2 class="epoch-title">Просвещение: чувство, разум и происхождение речи</h2>
+  <div class="epoch-period">XVIII в. · шрифт: Old Standard TT</div>
+  <div class="epoch-body">
+    <p class="epigraph">Прежде чем доказывать — человек пел.</p>
+    <p>Век разума обратился к вопросу, которого древние почти не касались: <strong>как зародилась речь?</strong> Сама постановка была революционной: она предполагала, что язык имеет историю — начало и развитие, — что было немыслимо ни для Античности, ни для Средневековья.</p>
+    <p><strong>Кондильяк</strong> в «Опыте о происхождении человеческих знаний» представил мысль-эксперимент: двое детей, выросших в пустыне, начнут с мимики и возгласов, перейдут к произвольным знакам — и оттуда к языку. Язык не изобретён раз и навсегда: он развивался постепенно, как ребёнок учится говорить. Но если язык развивается — как дологические существа понимали друг друга без языка? <strong>Руссо</strong> ответил иначе: первые языки были певучими, полными страсти и образов; потребность породила первые жесты, а страсть — первые слова. Мы выиграли в ясности и потеряли в чувстве: критика Просвещения изнутри. Но если языки могли быть совсем иными — музыкальными вместо логических — возможна ли вообще универсальная грамматика? <strong>Гердер</strong> отверг и божественное откровение, и рассудочное изобретение: язык — медленно выработанное средство познания, растущее из чувственного опыта. А грамматисты <strong>Порт-Рояля</strong> продолжали верить во всеобщие принципы: всякое суждение есть субъект, атрибут и связка — структура мысли как таковой. Эта вера определила лингвистику вплоть до XX века.</p>
+
+    <div class="globe">
+      <div class="globe-tag">Глобус · мост между мирами</div>
+      <p><strong>Уильям Джонс (1786)</strong> — Калькутта. В речи Азиатскому обществу указал: санскрит имеет «чудесно правильную» структуру и несомненное родство с греческим и латынью. Индийская грамматическая традиция, старше европейской на два тысячелетия, через Джонса вошла в европейскую науку и подвела мост к сравнительному языкознанию XIX века.</p>
+    </div>
+
+    <div class="shadow">
+      <div class="shadow-tag">Тень · власть и исключение</div>
+      <p>Академии нормировали язык: Французская академия (с 1635 года) решала, что «правильно», а что нет. В 1793 году в Париже была гильотинирована Олимпия де Гуж — автор «Декларации прав женщины»: слово стало преступлением, наказуемым смертью. Язык Просвещения говорил о свободе — но не на всех языках и не для всех.</p>
+    </div>
+
+    <div class="contradiction">
+      <div class="thesis">
+        <div class="col-label">Тезис · Кондильяк</div>
+        Язык развивается из ощущений и жестов. Его начало — крик нужды, а не откровение; язык — продукт постепенного опыта.
+      </div>
+      <div class="antithesis">
+        <div class="col-label">Антитезис · Руссо</div>
+        Первые языки были музыкой и страстью, а не логикой. Мы потеряли поющий язык и выиграли рассуждающий — развитие ведёт не только к выигрышу.
+      </div>
+    </div>
+    <div class="unresolved"><b>Неразрешённое · уходит в эпоху V</b>
+      Если язык развивается — как первые люди поняли друг друга без языка? Если есть универсальная грамматика — почему языки так различны? Может ли развитие вести к невосполнимой потере?
+    </div>
+  </div>
+</section>
+
+<!-- ============ q5 · XIX ВЕК ============ -->
+<section class="state epoch" id="e5" data-q="q5" aria-label="Эпоха V">
+  <div class="state-mark">Эпоха V <span class="qn">· q₅</span> · противоречие: дерево vs горизонт</div>
+  <h2 class="epoch-title">XIX век: родство языков и дух народа</h2>
+  <div class="epoch-period">XIX в. · шрифт: Playfair Display</div>
+  <div class="epoch-body">
+    <p class="epigraph">Внутренняя форма — окно, через которое народ смотрит на мир.</p>
+    <p>В 1816 году <strong>Франц Бопп</strong> опубликовал «О системе спряжения санскритского языка…» и заложил основы сравнительно-исторического языкознания: санскрит, латынь, греческий, германские и кельтские языки восходят к общему предку. Это было чудо — историческая реконструкция без рукописей, восстановление форм, которые никогда не были записаны. Язык перестал быть вневременной категорией и стал артефактом, живым свидетелем перемещений народов. <strong>Якоб Гримм</strong> сформулировал закон о чередованиях согласных — и сравнительное языкознание стало строгой дисциплиной. Но если язык историчен, может ли в нём быть вечная истина — или истина меняется вместе с ним?</p>
+    <p><strong>Гумбольдт</strong> ответил вопросом на вопрос: язык не продукт (<em>ergon</em>), а деятельность (<em>energeia</em>). Каждый язык — органическое целое с внутренней формой: особым способом, которым народ членит мир и придаёт ему словесную плоть. Изучать язык — значит не описывать правила, а постигать мировоззрение народа. Но если язык создаёт мир — кто создаёт язык? Люди; но люди уже живут в мире языка. Это круг, из которого философия до сих пор не нашла выхода. В России <strong>Афанасий Потебня</strong> развил мысль Гумбольдта: слово — не знак вещи, а средство создания образа; внешняя форма — звучание, внутренняя — образ, через который народ понимает сущность. В «от-це» русская речь слышит отделённого. Язык XIX века впервые предстал существом, живущим по собственным законам, растущим и ветвящимся подобно дереву.</p>
+
+    <div class="globe">
+      <div class="globe-tag">Глобус · неевропейская параллель</div>
+      <p><strong>Мотоори Норинага (XVIII–XIX вв.)</strong> — японская школа кокугаку, «национальное учение». Филологическая реконструкция «Манъёсю» и древнего японского языка как путь к «чистому сердцу» (магокоро) доисторической речи: свой ответ на тот же вопрос о духе народа, независимый от Гумбольдта.</p>
+    </div>
+
+    <div class="shadow">
+      <div class="shadow-tag">Тень · власть и исключение</div>
+      <p>Эмский указ 1876 года запретил печать и ввоз книг на украинском языке в Российской империи — «не было, нет и быть не может отдельного малороссийского языка». Век, открывший родство языков, одновременно превратил язык в инструмент имперской политики: кто определяет, что «диалект», а что «язык», тот определяет, кто существует.</p>
+    </div>
+
+    <div class="contradiction">
+      <div class="thesis">
+        <div class="col-label">Тезис · Гумбольдт, Потебня</div>
+        Язык — органическая деятельность народа. Каждый язык создаёт свой мир; внутренняя форма определяет способ видения.
+      </div>
+      <div class="antithesis">
+        <div class="col-label">Антитезис · сравнительный метод</div>
+        Все языки имеют общее происхождение. История языков подчинена универсальным звуковым законам; единство происхождения не отменяет, но объясняет различия.
+      </div>
+    </div>
+    <div class="unresolved"><b>Неразрешённое · уходит в эпоху VI</b>
+      Если язык создаёт мир — кто создаёт язык? Если языки родичи — почему их внутренние формы так различны? Могут ли люди, говорящие на разных языках, понимать друг друга вообще?
+    </div>
+  </div>
+</section>
+
+<!-- ============ q6 · XX ВЕК ============ -->
+<section class="state epoch" id="e6" data-q="q6" aria-label="Эпоха VI">
+  <div class="state-mark">Эпоха VI <span class="qn">· q₆</span> · противоречие: язык vs речь · система vs биология</div>
+  <h2 class="epoch-title">XX век: знак, система и порождающее устройство</h2>
+  <div class="epoch-period">XX в. · шрифт: PT Serif</div>
+  <div class="epoch-body">
+    <p class="epigraph">Смысл живёт не в слове, а между словами.</p>
+    <p><strong>Фердинанд де Соссюр</strong> совершил переворот, равного которому лингвистика не знала со времён Аристотеля. Он разделил <em>langue</em> — систему знаков, существующую в коллективе и не зависящую от воли говорящего, — и <em>parole</em>, индивидуальный акт речи. Знак состоит из означающего и означаемого; их связь произвольна. Нет естественного родства между звуком и смыслом — оно установлено обществом, и значение каждого знака определяется не природой, а положением в системе, отношением к другим знакам. Синхрония должна предшествовать диахронии: говорящий не сознаёт исторических изменений. Но тогда смысл — не отношение слова к вещи, а отношение слова к словам. И если я чувствую нечто, не членящееся на слова, — могу ли я это выразить?</p>
+    <p>Во второй половине века <strong>Ноам Хомский</strong> превратил лингвистику в раздел когнитивной науки. Компетенция — знание языка — описывается порождающей грамматикой: конечным набором правил, производящим бесконечное множество предложений. Глубинная структура трансформируется в поверхностную; ребёнок усваивает язык потому, что врождённые структуры мозга уже содержат универсальную грамматику. Но если язык в голове — почему дети не знают ничего, пока не услышат чужую речь? Соссюр говорит: язык — социальный факт. Хомский: биологическое свойство мозга. Оба правы и оба неправы: язык одновременно система и биология, социум и мозг.</p>
+
+    <div class="globe">
+      <div class="globe-tag">Глобус · параллельные революции</div>
+      <p><strong>Иван Бодуэн де Куртенэ</strong> — Казанская школа, 1870-е: понятие фонемы введено за десятилетия до женевских лекций Соссюра, независимо и по-другому обосновано. <strong>Лев Выготский</strong> — «Мышление и речь» (1934): внутренняя речь не «говорение минус звук», а особый план мышления; смысл слова не сводится к его предметной отсылке.</p>
+    </div>
+
+    <div class="shadow">
+      <div class="shadow-tag">Тень · власть и финансирование</div>
+      <p>Машинный перевод родился на деньги Холодной войны: американские фонды финансировали вычислительную лингвистику как оборонный проект. Доклад ALPAC (1966) оборвал финансирование одним росчерком — наука о языке десятилетиями зависела от того, кому и для чего нужен язык. Структурализм, при всём его нейтралитете, рос не в вакууме.</p>
+    </div>
+
+    <div class="contradiction">
+      <div class="thesis">
+        <div class="col-label">Тезис · Соссюр</div>
+        Язык — система знаков. Смысл определяется позицией знака в системе; связь означающего и означаемого произвольна.
+      </div>
+      <div class="antithesis">
+        <div class="col-label">Антитезис · Хомский</div>
+        Язык — врождённая биологическая структура. Универсальная грамматика содержится в мозге; язык — свойство организма, а не социума.
+      </div>
+    </div>
+    <div class="unresolved"><b>Неразрешённое · уходит в эпоху VII</b>
+      Если язык — система, как она возникла в мозге? Если биология — почему так зависит от общества? И где в этих теориях место для смысла, который я хочу выразить и не могу?
+    </div>
+  </div>
+</section>
+
+<!-- ============ q7 · XXI ВЕК ============ -->
+<section class="state epoch" id="e7" data-q="q7" aria-label="Эпоха VII">
+  <div class="state-mark">Эпоха VII <span class="qn">· q₇</span> · противоречие: тело vs вычисление</div>
+  <h2 class="epoch-title">Конец XX — XXI век: тело, мозг и предсказание</h2>
+  <div class="epoch-period">конец XX — начало XXI в. · шрифт: Inter</div>
+  <div class="epoch-body">
+    <p class="epigraph">Стихотворение максимизирует ошибку предсказания — и в этом его правда.</p>
+    <p>Когнитивная революция 1970–1980-х вернула языку его тело. <strong>Элеонора Рош</strong> показала, что категории строятся не по формальной логике, а вокруг прототипов. <strong>Джордж Лакофф</strong> на этом фундаменте доказал: мы мыслим телом. Понятия «время», «спор», «состояние» понимаются через метафоры — время как движение, спор как война, состояние как контейнер. Метафоры — не украшение речи, а основа мышления, коренящаяся в телесном опыте. <strong>Антонио Дамасио</strong> открыл соматический маркер: каждое решение сопровождается телесным ощущением, направляющим выбор слов. <strong>Лиза Фельдман Барретт</strong> показала: эмоции — не врождённые реакции, а предсказания мозга на основе интероцепции, непрерывного считывания состояния тела.</p>
+    <p><strong>Карл Фристон</strong> сформулировал принцип свободной энергии: мозг постоянно строит модель мира и обновляет её, чтобы предсказывать входящие сигналы и минимизировать их ошибку. Язык в этой картине — не средство передачи информации, а канал снижения неопределённости. Говорящий не кодирует готовую мысль — он совершает телесное действие, направленное на изменение состояния другого тела. Слушающий не декодирует — он обновляет собственную предиктивную модель. Язык вернулся туда, откуда начинал у Гераклита: он есть действие, событие между телами, а не вещь, которую передают из головы в голову. Но есть проблема: люди пишут стихи, максимизируя ошибку предсказания; люди лгут — зачем, если язык для истины? Люди говорят бессмыслицу, потому что им хочется. Язык шире любой своей теории — и это, возможно, нас спасает.</p>
+
+    <div class="globe">
+      <div class="globe-tag">Глобус · голоса эпохи</div>
+      <p><strong>Элеонора Рош</strong> — прототипная семантика: категории имеют центры и периферии, а не чёткие границы; её эксперименты 1970-х стали фундаментом когнитивной лингвистики. <strong>Дебора Таннен</strong> — дискурс-анализ повседневного разговора: понимание не «передача информации», а непрерывные переговоры смыслов, различающихся вплоть до гендерных культур речи.</p>
+    </div>
+
+    <div class="shadow">
+      <div class="shadow-tag">Тень · вычисление и собственность</div>
+      <p>Языковые модели нашего века обучены на текстах, собранных без согласия их авторов: миллиарды человеческих слов стали сырьём. Предсказание речи оказалось предсказанием человека — и снова, как во все эпохи, тот, кто владеет языком-машиной, владеет рычагом. Вопрос эпохи VII не только «как работает язык», но и «кому принадлежит его вычисление».</p>
+    </div>
+
+    <div class="contradiction">
+      <div class="thesis">
+        <div class="col-label">Тезис · Лакофф, Дамасио</div>
+        Язык укоренён в теле. Мышление телесно и метафорично; язык воплощает опыт живого существа, а не перекодирует абстракции.
+      </div>
+      <div class="antithesis">
+        <div class="col-label">Антитезис · Фристон</div>
+        Язык — канал минимизации ошибки предсказания. Мозг вычисляет языком, как и всяким иным способом взаимодействия с миром.
+      </div>
+    </div>
+    <div class="unresolved"><b>Неразрешённое · переходит в послесловие</b>
+      Если язык воплощает телесный опыт — как возникает абстрактная мысль? Если это вычисление — почему стихи, ложь и бессмыслица суть самые живые его части? Почему люди говорят не так, как должны?
+    </div>
+  </div>
+</section>
+
+<!-- ============ q8 · ПОСЛЕСЛОВИЕ ============ -->
+<section class="state problems" id="after" data-q="q8" aria-label="Послесловие">
+  <div class="state-mark">Послесловие <span class="qn">· q₈</span></div>
+  <h2 class="epoch-title">Семь нерешённых проблем</h2>
+  <div class="epoch-period">то, что машина передаёт следующей версии себя</div>
+  <div class="epoch-body">
+    <p>Этот документ задумывался как история языковой мысли. В процессе работы обнаружилось, что это не история развития, а история умножения загадок: каждая эпоха решает одну проблему и создаёт две новые. Вот семь вопросов, переходящих из века в век, меняющих форму, но не находящих разрешения.</p>
+    <p><b>Первый: природа или условность?</b> Соссюр объявил связь звука и смысла произвольной — но звукосимволизм реален: «бум» звучит как удар. Правда, возможно, посередине.</p>
+    <p><b>Второй: где живёт смысл?</b> В слове? В душе? В системе? В мозге? В теле? Каждая эпоха предлагала новый адрес, и ни один не оказался окончательным. Может быть, смысл — не вещь, которую можно локализовать, а событие между говорящим и слушающим.</p>
+    <p><b>Третий: искажает ли язык мысль?</b> Бэкон — да. Хомский — нет, ибо язык и есть мысль. Гумбольдт — не искажает, а формирует. Мы так и не выяснили, возможна ли мысль без языка.</p>
+    <p><b>Четвёртый: как возник язык?</b> Из жестов? Из пения? Из врождённых структур? Это событие не оставило следов в археологической записи — возможно, навсегда.</p>
+    <p><b>Пятый: создаёт ли язык мир?</b> Гумбольдт и Потебня — да. Соссюр — только систему различий. Но если нет — почему люди, говорящие на разных языках, по-разному описывают один и тот же мир?</p>
+    <p><b>Шестой: система или биология?</b> Соссюр и Хомский не примирены. Язык — одновременно социальная система и свойство мозга; ни одна теория не объясняет это двойство до конца.</p>
+    <p><b>Седьмой: что делает язык шире любой теории?</b> Стихи. Ложь. Бессмыслица. Молчание. Ни одна теория — от Платона до Фристона — не объясняет, почему язык так упорно сопротивляется теоретизации. Может быть, в этом и состоит его сущность.</p>
+  </div>
+</section>
+
+<!-- ============ q9 · АВТОМАТ (АКЦЕПТИРУЮЩЕЕ СОСТОЯНИЕ) ============ -->
+<section class="state" id="automaton" data-q="q9" aria-label="Автомат">
+  <div class="state-mark">Автомат <span class="qn">· q₉ · акцептирующее состояние</span></div>
+  <h2 class="epoch-title">Дом как машина</h2>
+  <div class="epoch-period">δ-таблица · диаграмма состояний · колофон</div>
+  <div class="epoch-body">
+    <p>Этот документ построен как детерминированный конечный автомат. Состояния — его разделы; символы — ваши действия; чтение — цепочка переходов. В этом есть историческая ирония: классификацию таких машин дал Хомский — герой состояния q₆. Регулярные языки, тип-3 его иерархии, — это в точности языки конечных автоматов. Дом, рассказывающий историю языка, сам оказался формальным языком — и потому имеет право <em>принимать</em> своё прочтение.</p>
+
+    <div class="automaton-math">
+      M = (<b>Q</b>, <b>Σ</b>, δ, <b>q₀</b>, <b>F</b>)<br>
+      <b>Q</b> = {q₀, q₁, q₂, q₃, q₄, q₅, q₆, q₇, q₈, q₉}<br>
+      <b>Σ</b> = {scroll, next, prev, top, end, globe, shadow}<br>
+      <b>q₀</b> = обложка · <b>F</b> = {q₉}<br>
+      L(M) = язык, прочитанный во всех семи эпохах
+    </div>
+
+    <table class="dtable" id="dtable" aria-label="Таблица переходов δ">
+      <thead>
+        <tr><th>Q \ Σ</th><th>next</th><th>prev</th><th>top</th><th>end</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <p style="font-family:var(--mono); font-size:11px; color:var(--faint); margin-bottom:24px;">
+      Самопереходы: δ(qᵢ, globe) = (qᵢ, слой+1) · δ(qᵢ, shadow) = (qᵢ, слой−1) — слои 0…2 по модулю 3.<br>
+      scroll внутри состояния не меняет q; scroll через границу разделов = next или prev.
+    </p>
+
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 960 150" width="100%" height="150" role="img" aria-label="Диаграмма состояний автомата: q0..q9, q9 акцептирующее">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#918C84"/>
+          </marker>
+        </defs>
+        <g font-family="JetBrains Mono, monospace" font-size="13">
+          <g stroke="#918C84" stroke-width="1" fill="none" marker-end="url(#arrow)">
+            <line x1="70"  y1="75" x2="130" y2="75"/>
+            <line x1="170" y1="75" x2="230" y2="75"/>
+            <line x1="270" y1="75" x2="330" y2="75"/>
+            <line x1="370" y1="75" x2="430" y2="75"/>
+            <line x1="470" y1="75" x2="530" y2="75"/>
+            <line x1="570" y1="75" x2="630" y2="75"/>
+            <line x1="670" y1="75" x2="730" y2="75"/>
+            <line x1="770" y1="75" x2="830" y2="75"/>
+            <line x1="870" y1="75" x2="880" y2="75"/>
+          </g>
+          <g text-anchor="middle" fill="#C6A85B">
+            <circle cx="45"  cy="75" r="25" fill="none" stroke="#918C84"/>
+            <text x="45"  y="80" fill="#D8D4CC">q₀</text>
+            <circle cx="145" cy="75" r="25" fill="none" stroke="#918C84"/>
+            <text x="145" y="80" fill="#D8D4CC">q₁</text>
+            <circle cx="245" cy="75" r="25" fill="none" stroke="#918C84"/>
+            <text x="245" y="80" fill="#D8D4CC">q₂</text>
+            <circle cx="345" cy="75" r="25" fill="none" stroke="#918C84"/>
+            <text x="345" y="80" fill="#D8D4CC">q₃</text>
+            <circle cx="445" cy="75" r="25" fill="none" stroke="#918C84"/>
+            <text x="445" y="80" fill="#D8D4CC">q₄</text>
+            <circle cx="545" cy="75" r="25" fill="none" stroke="#918C84"/>
+            <text x="545" y="80" fill="#D8D4CC">q₅</text>
+            <circle cx="645" cy="75" r="25" fill="none" stroke="#918C84"/>
+            <text x="645" y="80" fill="#D8D4CC">q₆</text>
+            <circle cx="745" cy="75" r="25" fill="none" stroke="#918C84"/>
+            <text x="745" y="80" fill="#D8D4CC">q₇</text>
+            <circle cx="845" cy="75" r="25" fill="none" stroke="#918C84"/>
+            <text x="845" y="80" fill="#D8D4CC">q₈</text>
+            <circle cx="915" cy="75" r="27" fill="none" stroke="#C6A85B" stroke-width="1.5"/>
+            <circle cx="915" cy="75" r="21" fill="none" stroke="#C6A85B"/>
+            <text x="915" y="80" fill="#C6A85B">q₉</text>
+          </g>
+          <g text-anchor="middle" fill="#918C84" font-size="10">
+            <text x="45"  y="120">обложка</text>
+            <text x="145" y="120">античность</text>
+            <text x="245" y="120">средние века</text>
+            <text x="345" y="120">новое время</text>
+            <text x="445" y="120">просвещение</text>
+            <text x="545" y="120">XIX</text>
+            <text x="645" y="120">XX</text>
+            <text x="745" y="120">XXI</text>
+            <text x="845" y="120">послесловие</text>
+            <text x="915" y="122">F</text>
+          </g>
+          <g text-anchor="middle" fill="#918C84" font-size="9">
+            <text x="150" y="55">next / scroll</text>
+          </g>
+        </g>
+      </svg>
+    </div>
+
+    <h3 style="font-size:19px; font-weight:600; margin:34px 0 14px;">Почему именно эти семь шрифтов</h3>
+    <p class="font-note">Ранняя версия проекта заявляла «семь эпох — семь шрифтов — без анахронизмов», но аудит это не пережило: Cardo — цифровой шрифт 2002 года без кириллицы, UnifrakturCook не покрывает русский заголовок. Здесь — семь гарнитур, каждая из которых (а) имеет полную кириллицу и (б) стилистически честно соответствует своей эпохе, без претензии на подлинность:</p>
+    <table class="dtable font-note">
+      <thead><tr><th>Эпоха</th><th>Гарнитура</th><th>Почему она</th></tr></thead>
+      <tbody>
+        <tr><td>q₁ Античность</td><td>Cormorant</td><td>лёгкая антиква с каллиграфической памятью</td></tr>
+        <tr><td>q₂ Средневековье</td><td>Vollkorn</td><td>тёмная «книжная» серифная плоть рукописи</td></tr>
+        <tr><td>q₃ Новое время</td><td>EB Garamond</td><td>гармонию ренессансной печати XVI века</td></tr>
+        <tr><td>q₄ Просвещение</td><td>Old Standard TT</td><td>классицистическая академическая строгость XVIII–XIX вв.</td></tr>
+        <tr><td>q₅ XIX век</td><td>Playfair Display</td><td>дидоновский контраст промышленной печати</td></tr>
+        <tr><td>q₆ XX век</td><td>PT Serif</td><td>пан-кириллическая гарнитура публичного языка</td></tr>
+        <tr><td>q₇ XXI век</td><td>Inter</td><td>нейтральный интерфейсный гротеск вычислений</td></tr>
+      </tbody>
+    </table>
+
+    <div class="seal" id="seal">
+      <div class="seal-title">Язык принят</div>
+      <div class="seal-sub" id="sealSub">все семь эпох посещены · ω ∈ L(M)</div>
+    </div>
+  </div>
+</section>
+
+<footer class="colophon">
+  <p>
+    Язык сквозь эпохи · Дом-Автомат v21 · 2026<br>
+    Синтез материалов проекта: DOCX-эссе, HTML-версии v18–v19, критический аудит, план эпох<br>
+    Дизайн по трендам 2025–2026: scrollytelling, возврат серифов, WCAG 2.2 AA<br>
+    Ноль зависимостей · один файл · работает без JavaScript и офлайн
+  </p>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var STATES = [
+    { q: 'q0', name: 'Обложка · Вступление' },
+    { q: 'q1', name: 'Античность' },
+    { q: 'q2', name: 'Средневековье' },
+    { q: 'q3', name: 'Раннее Новое время' },
+    { q: 'q4', name: 'Просвещение' },
+    { q: 'q5', name: 'XIX век' },
+    { q: 'q6', name: 'XX век' },
+    { q: 'q7', name: 'XXI век' },
+    { q: 'q8', name: 'Послесловие' },
+    { q: 'q9', name: 'Автомат' }
+  ];
+  var EPOCHS = ['q1','q2','q3','q4','q5','q6','q7'];
+  var LAYER_NAMES = ['Канон', 'Канон+Глобус', 'Полный: +Тень'];
+
+  var current = 'q0';
+  var visited = { q0: true };
+  var accepted = false;
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var SUB = '₀₁₂₃₄₅₆₇₈₉';
+  function sub(q) { return 'q' + SUB[parseInt(q.slice(1), 10)]; }
+
+  var stateView = document.getElementById('stateView');
+  var deltaView = document.getElementById('deltaView');
+  var tape = document.getElementById('tape');
+  var progress = document.getElementById('progress');
+  var btnLayer = document.getElementById('btnLayer');
+  var railLinks = document.querySelectorAll('[data-rail]');
+  var sections = document.querySelectorAll('section[data-q]');
+  var tbody = document.querySelector('#dtable tbody');
+
+  /* ---------- таблица δ ---------- */
+  var dRows = '';
+  STATES.forEach(function (s, i) {
+    var next = i < STATES.length - 1 ? sub(STATES[i + 1].q) : sub('q9') + ' (само)';
+    var prev = i > 0 ? sub(STATES[i - 1].q) : '∅ (нет)';
+    var acc = s.q === 'q9' ? ' class="acc"' : '';
+    dRows += '<tr' + acc + '><td>' + sub(s.q) + '</td><td>' + next + '</td><td>' + prev +
+             '</td><td>' + sub('q0') + '</td><td>' + sub('q9') + '</td></tr>';
+  });
+  if (tbody) tbody.innerHTML = dRows;
+
+  /* ---------- лента переходов ---------- */
+  function logDelta(from, sym, to) {
+    if (!tape) return;
+    var line = document.createElement('span');
+    if (sym === 'accept') {
+      line.className = 'accepted-line';
+      line.textContent = 'ω ∈ L(M) · язык принят: все семь эпох посещены';
+    } else {
+      line.textContent = 'δ(' + sub(from) + ', ' + sym + ') → ' + (to.indexOf('слой') >= 0 ? sub(current) + ' ' + to.slice(to.indexOf(' ')) : sub(to));
+    }
+    tape.appendChild(line);
+    while (tape.children.length > 5) tape.removeChild(tape.firstChild);
+  }
+
+  /* ---------- переход ---------- */
+  function setState(q, sym) {
+    var from = current;
+    current = q;
+    visited[q] = true;
+    var st = STATES.filter(function (s) { return s.q === q; })[0];
+    if (stateView) stateView.textContent = sub(q) + ' · ' + (st ? st.name : '');
+    if (deltaView) deltaView.textContent = 'δ(' + sub(from) + ', ' + sym + ') → ' + sub(q);
+    railLinks.forEach(function (a) {
+      var active = a.getAttribute('data-rail') === q;
+      a.classList.toggle('active', active);
+      if (active) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+    });
+    logDelta(from, sym, q);
+
+    var all = EPOCHS.every(function (e) { return visited[e]; });
+    if (all && !accepted) {
+      accepted = true;
+      document.body.classList.add('accepted');
+      logDelta(q, 'accept', 'F');
+      if (deltaView) deltaView.textContent = 'ω ∈ L(M) · язык принят · 7/7 эпох';
+    }
+  }
+
+  function jump(q, sym) {
+    var target = document.querySelector('section[data-q="' + q + '"]');
+    if (!target) return;
+    target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    setState(q, sym || 'jump');
+  }
+
+  /* ---------- наблюдение за скроллом ----------
+     Тонкая полоса наблюдения (35%–45% высоты экрана): секция «активна»,
+     когда пересекает её. Работает для секций любой высоты. */
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var q = en.target.getAttribute('data-q');
+        if (q === current) return;
+        var ci = STATES.map(function (s) { return s.q; }).indexOf(current);
+        var ni = STATES.map(function (s) { return s.q; }).indexOf(q);
+        setState(q, ni > ci ? 'next' : 'prev');
+      });
+    }, { threshold: 0, rootMargin: '-35% 0px -55% 0px' });
+    sections.forEach(function (s) { io.observe(s); });
+  }
+
+  /* ---------- прогресс-бар ---------- */
+  window.addEventListener('scroll', function () {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var p = max > 0 ? (h.scrollTop / max) * 100 : 0;
+    progress.style.width = p + '%';
+  }, { passive: true });
+
+  /* ---------- слои ---------- */
+  var layer = 1;
+  try { var saved = localStorage.getItem('yse-layer'); if (saved !== null) layer = Math.min(2, Math.max(0, parseInt(saved, 10) || 0)); } catch (e) {}
+  function applyLayer() {
+    document.documentElement.setAttribute('data-layer', String(layer));
+    if (btnLayer) {
+      btnLayer.textContent = 'слой: ' + LAYER_NAMES[layer];
+      btnLayer.setAttribute('aria-pressed', layer === 2 ? 'true' : 'false');
+    }
+    try { localStorage.setItem('yse-layer', String(layer)); } catch (e) {}
+  }
+  applyLayer();
+  function layerUp()   { layer = (layer + 1) % 3; applyLayer(); logDelta(current, 'globe', current + ' (+слой)'); }
+  function layerDown() { layer = (layer + 2) % 3; applyLayer(); logDelta(current, 'shadow', current + ' (−слой)'); }
+  if (btnLayer) btnLayer.addEventListener('click', layerUp);
+
+  /* ---------- кнопки и клавиатура ---------- */
+  document.getElementById('btnNext').addEventListener('click', function () {
+    var i = Math.min(STATES.length - 1, STATES.map(function (s) { return s.q; }).indexOf(current) + 1);
+    jump(STATES[i].q, 'next');
+  });
+  document.getElementById('btnPrev').addEventListener('click', function () {
+    var i = Math.max(0, STATES.map(function (s) { return s.q; }).indexOf(current) - 1);
+    jump(STATES[i].q, 'prev');
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key;
+    if (k === 'ArrowRight' || k === 'ArrowDown' || k === 'PageDown') {
+      var i = Math.min(STATES.length - 1, STATES.map(function (s) { return s.q; }).indexOf(current) + 1);
+      jump(STATES[i].q, 'next'); e.preventDefault();
+    } else if (k === 'ArrowLeft' || k === 'ArrowUp' || k === 'PageUp') {
+      var j = Math.max(0, STATES.map(function (s) { return s.q; }).indexOf(current) - 1);
+      jump(STATES[j].q, 'prev'); e.preventDefault();
+    } else if (k === 'Home') { jump('q0', 'top'); e.preventDefault(); }
+    else if (k === 'End') { jump('q9', 'end'); e.preventDefault(); }
+    else if (k === 'g' || k === 'G' || k === 'п' || k === 'П') { layerUp(); }
+    else if (k === 't' || k === 'T' || k === 'е' || k === 'Е') { layerDown(); }
+    else if (/^[0-9]$/.test(k)) {
+      var n = parseInt(k, 10);
+      if (n < STATES.length) jump(STATES[n].q, 'jump');
+    }
+  });
+
+  /* ---------- клики по кнопкам-переходам ---------- */
+  document.querySelectorAll('[data-jump]').forEach(function (a) {
+    a.addEventListener('click', function (ev) {
+      ev.preventDefault();
+      jump(a.getAttribute('data-jump'), 'next');
+    });
+  });
+  railLinks.forEach(function (a) {
+    a.addEventListener('click', function (ev) {
+      ev.preventDefault();
+      jump(a.getAttribute('data-rail'), 'jump');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
