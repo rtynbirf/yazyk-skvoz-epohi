@@ -1,0 +1,64 @@
+# Счётчик-автомат: дом сам считает гостей, без внешних сервисов.
+# Раз в сутки спрашивает GitHub traffic API (скользящее окно 14 дней) и копит
+# историю по дням в traffic.json; сумма истории — счёт «за всё время наблюдения».
+# Токен: traffic-эндпоинт требует administration (read), которого у встроенного
+# GITHUB_TOKEN нет (проверено живым прогоном 2026-11-10: 403) — поэтому PAT живёт
+# в секрете репо HOUSE_TRAFFIC_TOKEN; fallback на github.token оставлен по
+# прецеденту cell-swarm (если у токена появятся права — секрет станет не нужен).
+# Коммит traffic.json обновляет Pages; push встроенным токеном не заводит других
+# воркфлоу (рекурсия Actions исключена), а Pages пересобирается штатно.
+# Идемпотентность: нет изменений — нет перехода, нет коммита.
+name: Счётчик-автомат
+
+permissions:
+  contents: write # коммит traffic.json; traffic API проверим живым прогоном
+
+on:
+  schedule:
+    - cron: '37 3 * * *' # ежедневно 03:37 UTC — вне топа часа
+  workflow_dispatch: # по требованию Хозяина
+
+concurrency:
+  group: traffic-counter
+  cancel-in-progress: false
+
+jobs:
+  count:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: δ₁ — спросить дом о визитах (GitHub traffic API, окно 14 дней)
+        env:
+          GH_TOKEN: ${{ secrets.HOUSE_TRAFFIC_TOKEN || github.token }}
+        run: |
+          set -euo pipefail
+          curl -sS --fail --retry 3 --retry-delay 5 \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "${{ github.api_url }}/repos/${{ github.repository }}/traffic/views" \
+            > /tmp/views.json
+          python3 -c "import json; d=json.load(open('/tmp/views.json')); print('окно:', d.get('count'), 'визитов,', d.get('uniques'), 'читателей')"
+
+      - name: δ₂ — слить окно в traffic.json (история по дням, max, идемпотентно)
+        run: python3 scripts/update_traffic.py /tmp/views.json traffic.json
+
+      - name: δ₃ — коммит состояния, если оно изменилось
+        run: |
+          git config user.name "дом-автомат"
+          git config user.email "rtynbirf@users.noreply.github.com"
+          if git diff --quiet -- traffic.json; then
+            echo "δ: состояние не изменилось — перехода нет (идемпотентность)"
+            exit 0
+          fi
+          git add traffic.json
+          git commit -m "chore(traffic): счётчик-автомат обновил посещения"
+          # сервер GitHub бывает недоступен на приёме (fatal error in commit_refs) —
+          # переход с повторами: 3 попытки с выдержкой
+          for i in 1 2 3; do
+            if git push; then exit 0; fi
+            echo "δ: пуш не принят (попытка $i), выдержка 10 с"
+            sleep 10
+          done
+          exit 1

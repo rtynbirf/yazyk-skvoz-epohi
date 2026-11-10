@@ -1,0 +1,58 @@
+# Страж дома: приёмка каждого изменения артефактов. Зелёный CI — закон дома (AGENTS.md).
+# Сам страж — ДКА: scripts/check.py идёт по артефактам δ-переходами, fail-closed,
+# только стандартная библиотека — ноль зависимостей, как и сам документ.
+# traffic.json не в paths: счётчик-автомат коммитит его ежедневно, стража это не касается.
+name: Страж дома
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - index.html
+      - feed.xml
+      - feed-la.xml
+      - sitemap.xml
+      - robots.txt
+      - 404.html
+      - .nojekyll
+      - scripts/check.py
+      - .github/workflows/guard.yml
+      - .github/workflows/traffic.yml
+  pull_request:
+  workflow_dispatch: # по требованию Хозяина
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: "δ₁ — XML дома well-formed: feed.xml, feed-la.xml, sitemap.xml"
+        run: |
+          set -e
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          for f in ("feed.xml", "feed-la.xml", "sitemap.xml"):
+              ET.parse(f)
+              print(f"✓ {f} well-formed")
+          PY
+
+      - name: "δ₂ — HTML: Nu HTML Checker (vnu) по всем html дома"
+        run: |
+          python3 -m pip install --quiet html5validator
+          html5validator --root . --log INFO
+
+      - name: "δ₃ — ДКА-приёмка: инварианты артефактов, fail-closed"
+        run: python3 scripts/check.py
+
+      - name: "δ₄ — воркфлоу дома: actionlint (поймал бы оба бага 2026-11-10)"
+        run: |
+          curl -sSL -o /tmp/actionlint.tar.gz \
+            https://github.com/rhysd/actionlint/releases/download/v1.7.7/actionlint_1.7.7_linux_amd64.tar.gz
+          tar -xzf /tmp/actionlint.tar.gz -C /tmp actionlint
+          /tmp/actionlint .github/workflows/*.yml

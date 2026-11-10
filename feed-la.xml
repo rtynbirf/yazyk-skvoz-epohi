@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xml:lang="la">
+  <channel>
+    <title>Lingua per Aetates · Tira transitionum</title>
+    <link>https://rtynbirf.github.io/yazyk-skvoz-epohi/</link>
+    <description>Septem voces, septem disputationes: dissertatio de lingua per septem aetates ordinata, ut automaton finitum determinativum M = (Q, Σ, δ, q₀, F). Tira haec eadem decem status narrat.</description>
+    <language>la</language>
+    <copyright>© 2026 rtynbirf · Polymath-Universum</copyright>
+    <lastBuildDate>Tue, 10 Nov 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link rel="self" type="application/rss+xml" href="https://rtynbirf.github.io/yazyk-skvoz-epohi/feed-la.xml"/>
+    <atom:link rel="alternate" type="application/rss+xml" hreflang="ru" href="https://rtynbirf.github.io/yazyk-skvoz-epohi/feed.xml"/>
+
+    <item>
+      <title>q₀ · Porta — historia aenigmatis nondum soluti</title>
+      <link>https://rtynbirf.github.io/yazyk-skvoz-epohi/#cover</link>
+      <guid isPermaLink="true">https://rtynbirf.github.io/yazyk-skvoz-epohi/#cover</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 +0000</pubDate>
+      <description>A logo Heracliti usque ad codicem praedictivum Fristonis. Non historia profectus, sed historia eiusdem aenigmatis variis verbis appellati.</description>
+    </item>
+    <item>
+      <title>q₁ · Antiquitas: logos et natura nominis</title>
+      <link>https://rtynbirf.github.io/yazyk-skvoz-epohi/#e1</link>
+      <guid isPermaLink="true">https://rtynbirf.github.io/yazyk-skvoz-epohi/#e1</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Si nomen non verum est, num res ipsa exsistit? Disputatio Cratyli et Hermogenis apud Platonem, catena quattuor graduum Aristotelis, sophistae et qui a logose exclusi sunt.</description>
+    </item>
+    <item>
+      <title>q₂ · Medium Aevum: signum, vestigium, voluntas Creatoris</title>
+      <link>https://rtynbirf.github.io/yazyk-skvoz-epohi/#e2</link>
+      <guid isPermaLink="true">https://rtynbirf.github.io/yazyk-skvoz-epohi/#e2</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Si Deus latine non loquitur, num exsistit? Verbum ut vestigium voluntatis Creatoris, grammatica ut theologia, inquisitio et linguae extra limites permissas relictae.</description>
+    </item>
+    <item>
+      <title>q₃ · Prima Aetas Nova: a voce ad mentem</title>
+      <link>https://rtynbirf.github.io/yazyk-skvoz-epohi/#e3</link>
+      <guid isPermaLink="true">https://rtynbirf.github.io/yazyk-skvoz-epohi/#e3</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Felem computare potes; murmur eius computare nequis. Grammatica universalis Port-Royal, ordo rationalis idearum et quod in eum non pervenit.</description>
+    </item>
+    <item>
+      <title>q₄ · Saeculum Lucis: sensus, ratio, origo loquendi</title>
+      <link>https://rtynbirf.github.io/yazyk-skvoz-epohi/#e4</link>
+      <guid isPermaLink="true">https://rtynbirf.github.io/yazyk-skvoz-epohi/#e4</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Antequam demonstrat, canebat. Disputationes de origine linguarum: Rousseau, Herder, academiae regiae et vetitum ipsius quaestionis.</description>
+    </item>
+    <item>
+      <title>q₅ · Saeculum XIX: cognatio linguarum et genius populi</title>
+      <link>https://rtynbirf.github.io/yazyk-skvoz-epohi/#e5</link>
+      <guid isPermaLink="true">https://rtynbirf.github.io/yazyk-skvoz-epohi/#e5</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Forma interna est fenestra, per quam populus mundum spectat. Jones et sanscrite, Bopp qui methodum comparativam fundavit, Humboldt et umbra imperiorum.</description>
+    </item>
+    <item>
+      <title>q₆ · Saeculum XX: signum, systema, apparatus generativus</title>
+      <link>https://rtynbirf.github.io/yazyk-skvoz-epohi/#e6</link>
+      <guid isPermaLink="true">https://rtynbirf.github.io/yazyk-skvoz-epohi/#e6</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Sensus non in verbo habitat, sed inter verba. Saussure, structuralismus, hierarchia Chomskyana, ALPAC et quos lingua audire perrexit nolens.</description>
+    </item>
+    <item>
+      <title>q₇ · Saeculum XXI: corpus, cerebrum, praedictio</title>
+      <link>https://rtynbirf.github.io/yazyk-skvoz-epohi/#e7</link>
+      <guid isPermaLink="true">https://rtynbirf.github.io/yazyk-skvoz-epohi/#e7</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Carmen errorem praedictionis in summum evehit — in hoc veritas eius. Lingua ut corpus et cerebrum, codicis praedictivi quaestio et qui in machina loquitur.</description>
+    </item>
+    <item>
+      <title>q₈ · Epilogus: septem problemata nondum soluta</title>
+      <link>https://rtynbirf.github.io/yazyk-skvoz-epohi/#after</link>
+      <guid isPermaLink="true">https://rtynbirf.github.io/yazyk-skvoz-epohi/#after</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Quaeque aetas suam quaestionem solvebat et aenigmata multiplicabat. Epilogus septem quaestiones colligit, ad quas humanitas adhuc responsum non habet.</description>
+    </item>
+    <item>
+      <title>q₉ · Domus machina — ω ∈ L(M)</title>
+      <link>https://rtynbirf.github.io/yazyk-skvoz-epohi/#automaton</link>
+      <guid isPermaLink="true">https://rtynbirf.github.io/yazyk-skvoz-epohi/#automaton</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Documentum ut automaton finitum determinativum: status sunt capita, symbola actus tui, lectio catena transitionum. Si septem aetates omnes legeris — ω ∈ L(M), lingua accepta est.</description>
+    </item>
+  </channel>
+</rss>
