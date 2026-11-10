@@ -1,5 +1,8 @@
 # Язык сквозь эпохи · Дом-Автомат v21
 
+[![Страж дома](https://github.com/rtynbirf/yazyk-skvoz-epohi/actions/workflows/guard.yml/badge.svg)](https://github.com/rtynbirf/yazyk-skvoz-epohi/actions/workflows/guard.yml)
+[![Счётчик-автомат](https://github.com/rtynbirf/yazyk-skvoz-epohi/actions/workflows/traffic.yml/badge.svg)](https://github.com/rtynbirf/yazyk-skvoz-epohi/actions/workflows/traffic.yml)
+
 Семиэпохальное историко-лингвистическое эссе, построенное как **детерминированный конечный автомат**.
 
 **Читать:** https://rtynbirf.github.io/yazyk-skvoz-epohi/
@@ -33,6 +36,24 @@
 | `G` / `T` | добавить / убрать слой истории |
 | `Home` / `End` | q₀ / q₉ |
 
+## Ленты переходов
+
+Лента — не метафора: в документе она и есть «лента переходов δ». Подписка — чтение той же машины со стороны.
+
+- [δ-лента по-русски (RSS 2.0)](https://rtynbirf.github.io/yazyk-skvoz-epohi/feed.xml) — десять состояний q₀…q₉;
+- [δ-лента latine (RSS 2.0)](https://rtynbirf.github.io/yazyk-skvoz-epohi/feed-la.xml) — вторая версия, *Lingua per Aetates*.
+
+Обе ленты ссылаются друг на друга (`atom:link rel=alternate hreflang`), а документ объявляет их в `<head>`.
+
+## Автоматика дома
+
+Дом не просто изображает автомат — он им обслуживается. Ни одного внешнего сервиса:
+
+- **Страж дома** (`.github/workflows/guard.yml`) — приёмка каждого изменения: Nu HTML Checker (vnu), XML-ленты, инварианты артефактов. Сам страж — ДКА из `scripts/check.py`: десять состояний, символы — артефакты дома, вердикт fail-closed: `ω ∈ L(G)`.
+- **Счётчик-автомат** (`.github/workflows/traffic.yml`) — ежедневно в 03:37 UTC спрашивает GitHub traffic API и дописывает историю по дням в `traffic.json`; сумма истории показывается в подвале документа («визитов за всё время наблюдения»). Без cookies, без скриптов третьих сторон, ничего не хранит о читателе — считает только сам GitHub.
+- **404** — единственное недетерминированное место дома: страница `δ(q, a) → ∅` с возвратом в q₀.
+
+---
 ## Происхождение
 
 Синтез материалов проекта: DOCX-эссе «Эпохи языка», HTML-версий v18–v19 (Linguistic Code), критического аудита и плана эпох — с учётом всех фактических правок аудита (Кратил и Гермоген вместо «герменевтов», четырёхзвенная цепь Аристотеля, Бопп «заложил основы»).
