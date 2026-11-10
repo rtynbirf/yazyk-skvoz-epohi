@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """
 Generate Epohti_jazyka.html — 7 epochs of linguistic thought
-in the Linguistic Code aesthetic (dark, serif, minimal, gold accent).
+in the Linguistic Code aesthetic (dark, minimal, gold accent).
 Navigation: left-side epoch rail (desktop) / top bar (mobile).
+Typography is PER-EPOCH: every era is typeset in fonts related
+to the scripts of its own time (Cyrillic subsets verified via GF API).
 """
 
 import html as h
@@ -153,7 +155,7 @@ html_content = f'''<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Язык сквозь эпохи</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;1,400&family=Bitter:ital,wght@0,400;0,500;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Forum&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@300;400&family=Jost:ital,wght@0,400;0,500;1,400&family=Old+Standard+TT:ital,wght@0,400;1,400&family=Oranienbaum&family=Oswald:wght@400;500&family=Poiret+One&family=Prata&family=Ruslan+Display&family=Unbounded:wght@300;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after {{ margin: 0; padding: 0; box-sizing: border-box; }}
 
@@ -167,9 +169,56 @@ html_content = f'''<!DOCTYPE html>
     --gold: #C6A85B;
     --gold-dim: #8B7A44;
     --gold-faint: rgba(198,168,91,0.08);
-    --serif: 'Cormorant Garamond', Georgia, serif;
     --sans: 'Inter', system-ui, sans-serif;
     --mono: 'JetBrains Mono', monospace;
+    --xxi: 'Unbounded', sans-serif;
+  }}
+
+  /* Каждая эпоха говорит шрифтами своего времени.
+     Все семейства проверены на кириллические подмножества. */
+  .epoch-section {{
+    --e-body-size: clamp(16px, 1.8vw, 18px);
+    --e-body-lh: 1.85;
+  }}
+  #antiquity {{
+    --e-display: 'Forum', Georgia, serif;
+    --e-text: 'Forum', Georgia, serif;
+    --e-accent: #C9A227;
+  }}
+  #middle-ages {{
+    --e-display: 'Ruslan Display', Georgia, serif;
+    --e-text: 'Alegreya', Georgia, serif;
+    --e-accent: #8E4A42;
+  }}
+  #early-modern {{
+    --e-display: 'Oranienbaum', Georgia, serif;
+    --e-text: 'EB Garamond', Georgia, serif;
+    --e-accent: #7E9C8B;
+  }}
+  #enlightenment {{
+    --e-display: 'Prata', Georgia, serif;
+    --e-text: 'Old Standard TT', Georgia, serif;
+    --e-accent: #8CA0B8;
+  }}
+  #nineteenth {{
+    --e-display: 'Oswald', sans-serif;
+    --e-text: 'Bitter', Georgia, serif;
+    --e-accent: #B87748;
+    --e-body-size: clamp(15.5px, 1.7vw, 17px);
+    --e-body-lh: 1.8;
+  }}
+  #twentieth {{
+    --e-display: 'Poiret One', sans-serif;
+    --e-text: 'Jost', sans-serif;
+    --e-accent: #C7402D;
+    --e-body-lh: 1.8;
+  }}
+  #twentyfirst {{
+    --e-display: 'Unbounded', sans-serif;
+    --e-text: 'Inter', system-ui, sans-serif;
+    --e-accent: #63B8A8;
+    --e-body-size: clamp(15.5px, 1.7vw, 17px);
+    --e-body-lh: 1.8;
   }}
 
   html {{ scroll-behavior: smooth; }}
@@ -200,11 +249,12 @@ html_content = f'''<!DOCTYPE html>
   }}
 
   .nav-rail-title {{
-    font-family: var(--serif);
-    font-size: 15px;
-    font-weight: 600;
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 500;
     color: var(--gold);
-    letter-spacing: 0.5px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
     padding: 0 24px 32px;
     border-bottom: 1px solid var(--gold-faint);
     margin-bottom: 24px;
@@ -225,8 +275,8 @@ html_content = f'''<!DOCTYPE html>
     background: var(--gold-faint);
   }}
   .nav-link.active {{
-    color: var(--gold);
-    border-left-color: var(--gold);
+    color: var(--nav-accent, var(--gold));
+    border-left-color: var(--nav-accent, var(--gold));
     background: var(--gold-faint);
   }}
   .nav-num {{
@@ -236,11 +286,27 @@ html_content = f'''<!DOCTYPE html>
     min-width: 18px;
     opacity: 0.5;
   }}
-  .nav-link.active .nav-num {{ opacity: 1; color: var(--gold); }}
+  .nav-link.active .nav-num {{ opacity: 1; color: var(--nav-accent, var(--gold)); }}
   .nav-label {{
     font-size: 12px;
     letter-spacing: 0.3px;
   }}
+  /* Рельса навигации — типографская лента эпох:
+     каждая ссылка набрана дисплейным шрифтом своей эпохи */
+  .nav-link[data-target="antiquity"] {{ --nav-accent: #C9A227; }}
+  .nav-link[data-target="antiquity"] .nav-label {{ font-family: 'Forum', serif; font-size: 13px; }}
+  .nav-link[data-target="middle-ages"] {{ --nav-accent: #8E4A42; }}
+  .nav-link[data-target="middle-ages"] .nav-label {{ font-family: 'Ruslan Display', serif; font-size: 11.5px; }}
+  .nav-link[data-target="early-modern"] {{ --nav-accent: #7E9C8B; }}
+  .nav-link[data-target="early-modern"] .nav-label {{ font-family: 'Oranienbaum', serif; font-size: 13.5px; }}
+  .nav-link[data-target="enlightenment"] {{ --nav-accent: #8CA0B8; }}
+  .nav-link[data-target="enlightenment"] .nav-label {{ font-family: 'Prata', serif; font-size: 12.5px; }}
+  .nav-link[data-target="nineteenth"] {{ --nav-accent: #B87748; }}
+  .nav-link[data-target="nineteenth"] .nav-label {{ font-family: 'Oswald', sans-serif; font-size: 12px; }}
+  .nav-link[data-target="twentieth"] {{ --nav-accent: #C7402D; }}
+  .nav-link[data-target="twentieth"] .nav-label {{ font-family: 'Poiret One', sans-serif; font-size: 13.5px; }}
+  .nav-link[data-target="twentyfirst"] {{ --nav-accent: #63B8A8; }}
+  .nav-link[data-target="twentyfirst"] .nav-label {{ font-family: 'Unbounded', sans-serif; font-size: 9.5px; }}
 
   /* === MOBILE TOP BAR === */
   .mobile-bar {{
@@ -256,9 +322,11 @@ html_content = f'''<!DOCTYPE html>
     gap: 12px;
   }}
   .mobile-bar-title {{
-    font-family: var(--serif);
-    font-size: 14px;
-    font-weight: 600;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
     color: var(--gold);
   }}
   .mobile-bar-open {{
@@ -293,9 +361,9 @@ html_content = f'''<!DOCTYPE html>
     border-bottom: 1px solid var(--gold-faint);
   }}
   .page-title {{
-    font-family: var(--serif);
-    font-size: clamp(28px, 4vw, 42px);
-    font-weight: 600;
+    font-family: var(--xxi);
+    font-size: clamp(24px, 3.6vw, 38px);
+    font-weight: 300;
     color: var(--text);
     line-height: 1.3;
     margin-bottom: 16px;
@@ -332,63 +400,114 @@ html_content = f'''<!DOCTYPE html>
     border-bottom: 1px solid rgba(198,168,91,0.1);
   }}
   .epoch-num {{
-    font-family: var(--mono);
-    font-size: 11px;
+    font-family: var(--e-display);
+    font-size: 13px;
     letter-spacing: 3px;
-    color: var(--gold-dim);
+    color: var(--e-accent);
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }}
   .epoch-title {{
-    font-family: var(--serif);
+    font-family: var(--e-display);
     font-size: clamp(22px, 3vw, 32px);
-    font-weight: 600;
+    font-weight: 400;
     color: var(--text);
     line-height: 1.3;
     margin-bottom: 6px;
   }}
+  #antiquity .epoch-title,
+  #nineteenth .epoch-title,
+  #twentieth .epoch-title {{
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }}
+  #nineteenth .epoch-title,
+  #twentyfirst .epoch-title {{
+    font-weight: 500;
+  }}
   .epoch-subtitle {{
-    font-family: var(--serif);
+    font-family: var(--e-text);
     font-style: italic;
     font-size: 16px;
     color: var(--text-dim);
     margin-bottom: 12px;
   }}
+  #antiquity .epoch-subtitle {{ font-style: normal; }}
   .epoch-period {{
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-faint);
-    letter-spacing: 1px;
+    font-family: var(--e-text);
+    font-size: 10.5px;
+    color: var(--e-accent);
+    opacity: 0.8;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
   }}
 
   .epoch-body p {{
-    font-family: var(--serif);
-    font-size: clamp(16px, 1.8vw, 18px);
-    line-height: 1.85;
+    font-family: var(--e-text);
+    font-size: var(--e-body-size);
+    line-height: var(--e-body-lh);
     color: var(--text);
     margin-bottom: 20px;
     text-align: justify;
+  }}
+  /* Буквица — дисплейный шрифт эпохи, приглушённый акцентный цвет */
+  .epoch-body > p:first-of-type::first-letter {{
+    font-family: var(--e-display);
+    color: var(--e-accent);
+    float: left;
+    font-size: 2.9em;
+    line-height: 0.85;
+    padding: 0.05em 0.12em 0 0;
+  }}
+  #antiquity .epoch-body > p:first-of-type::first-letter,
+  #nineteenth .epoch-body > p:first-of-type::first-letter,
+  #twentyfirst .epoch-body > p:first-of-type::first-letter {{
+    font-size: 2.3em;
+    line-height: 0.95;
   }}
 
   .epoch-body blockquote {{
     margin: 32px 0;
     padding: 20px 0 20px 24px;
-    border-left: 2px solid var(--gold-dim);
-    font-family: var(--serif);
+    border-left: 2px solid var(--e-accent);
+    font-family: var(--e-text);
     font-style: italic;
     font-size: clamp(15px, 1.6vw, 17px);
     color: var(--text-dim);
     line-height: 1.7;
   }}
+  #antiquity .epoch-body blockquote {{ font-style: normal; letter-spacing: 0.5px; }}
 
-  .epoch-names {{
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 1px;
+  .epoch-body .epoch-names {{
+    font-family: var(--e-text);
+    font-size: 10.5px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
     color: var(--text-faint);
     margin-top: 32px;
     padding-top: 20px;
     border-top: 1px solid rgba(198,168,91,0.06);
+  }}
+
+  /* === COLOPHON === */
+  .colophon {{
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--gold-faint);
+  }}
+  .colophon-note {{
+    font-family: var(--sans);
+    font-size: 12.5px;
+    color: var(--text-dim);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }}
+  .colophon-list {{
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    line-height: 1.9;
+    color: var(--text-faint);
   }}
 
   /* === RESPONSIVE === */
@@ -445,6 +564,11 @@ html_content = f'''<!DOCTYPE html>
     </div>
 
 {sections}
+
+    <footer class="colophon">
+      <p class="colophon-note">Типографика этой страницы — часть содержания: каждая эпоха набрана шрифтами, родственными письменности своего времени; интерфейс дома — вневременной.</p>
+      <p class="colophon-list">I Forum · II Ruslan Display, Alegreya · III Oranienbaum, EB Garamond · IV Prata, Old Standard TT · V Oswald, Bitter · VI Poiret One, Jost · VII Unbounded, Inter, JetBrains Mono</p>
+    </footer>
   </main>
 </div>
 

@@ -5,434 +5,383 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Язык сквозь эпохи</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=UnifrakturMaguntia&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@300;400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;1,400&family=Bitter:ital,wght@0,400;0,500;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Forum&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@300;400&family=Jost:ital,wght@0,400;0,500;1,400&family=Old+Standard+TT:ital,wght@0,400;1,400&family=Oranienbaum&family=Oswald:wght@400;500&family=Poiret+One&family=Prata&family=Ruslan+Display&family=Unbounded:wght@300;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
-    --bg: #0E1011; --surface: #16181B; --surface-2: #1C1F23;
-    --text: #D4D0C8; --text-dim: #7A7770; --text-faint: #4A4843;
-    --gold: #C6A85B; --gold-dim: #8B7A44;
+    --bg: #0E1011;
+    --surface: #16181B;
+    --surface-2: #1C1F23;
+    --text: #D4D0C8;
+    --text-dim: #7A7770;
+    --text-faint: #4A4843;
+    --gold: #C6A85B;
+    --gold-dim: #8B7A44;
     --gold-faint: rgba(198,168,91,0.08);
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+    --xxi: 'Unbounded', sans-serif;
+  }
+
+  /* Каждая эпоха говорит шрифтами своего времени.
+     Все семейства проверены на кириллические подмножества. */
+  .epoch-section {
+    --e-body-size: clamp(16px, 1.8vw, 18px);
+    --e-body-lh: 1.85;
+  }
+  #antiquity {
+    --e-display: 'Forum', Georgia, serif;
+    --e-text: 'Forum', Georgia, serif;
+    --e-accent: #C9A227;
+  }
+  #middle-ages {
+    --e-display: 'Ruslan Display', Georgia, serif;
+    --e-text: 'Alegreya', Georgia, serif;
+    --e-accent: #8E4A42;
+  }
+  #early-modern {
+    --e-display: 'Oranienbaum', Georgia, serif;
+    --e-text: 'EB Garamond', Georgia, serif;
+    --e-accent: #7E9C8B;
+  }
+  #enlightenment {
+    --e-display: 'Prata', Georgia, serif;
+    --e-text: 'Old Standard TT', Georgia, serif;
+    --e-accent: #8CA0B8;
+  }
+  #nineteenth {
+    --e-display: 'Oswald', sans-serif;
+    --e-text: 'Bitter', Georgia, serif;
+    --e-accent: #B87748;
+    --e-body-size: clamp(15.5px, 1.7vw, 17px);
+    --e-body-lh: 1.8;
+  }
+  #twentieth {
+    --e-display: 'Poiret One', sans-serif;
+    --e-text: 'Jost', sans-serif;
+    --e-accent: #C7402D;
+    --e-body-lh: 1.8;
+  }
+  #twentyfirst {
+    --e-display: 'Unbounded', sans-serif;
+    --e-text: 'Inter', system-ui, sans-serif;
+    --e-accent: #63B8A8;
+    --e-body-size: clamp(15.5px, 1.7vw, 17px);
+    --e-body-lh: 1.8;
   }
 
   html { scroll-behavior: smooth; }
   body {
-    background: var(--bg); color: var(--text);
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-weight: 400; line-height: 1.7; overflow-x: hidden;
-  }
-
-  /* ============================================
-     EPOCH-SPECIFIC TYPOGRAPHY
-     ============================================ */
-
-  /* I. ANTIQUITY — Roman inscriptions, all-caps dignity */
-  .era-antiquity .epoch-title {
-    font-family: 'Cinzel', serif;
-    font-weight: 700;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    font-size: clamp(20px, 2.8vw, 28px);
-  }
-  .era-antiquity .epoch-subtitle {
-    font-family: 'Cinzel', serif;
-    font-weight: 400;
-    font-style: normal;
-    letter-spacing: 1px;
-  }
-  .era-antiquity .epoch-num {
-    font-family: 'Cinzel', serif;
-    letter-spacing: 6px;
-    font-size: 10px;
-  }
-  .era-antiquity .epoch-body p {
-    font-family: 'EB Garamond', 'Times New Roman', serif;
-    font-size: clamp(17px, 1.8vw, 19px);
-    line-height: 1.9;
-  }
-  .era-antiquity blockquote {
-    font-family: 'Cinzel', serif;
-    font-style: normal;
-    letter-spacing: 1px;
-    font-size: clamp(14px, 1.5vw, 16px);
-    text-transform: uppercase;
-  }
-  .era-antiquity .epoch-period {
-    font-family: 'Cinzel', serif;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-
-  /* II. MIDDLE AGES — Gothic blackletter / manuscript */
-  .era-medieval .epoch-title {
-    font-family: 'UnifrakturMaguntia', blackletter, serif;
-    font-weight: 400;
-    font-size: clamp(26px, 3.5vw, 38px);
-    letter-spacing: 1px;
-  }
-  .era-medieval .epoch-subtitle {
-    font-family: 'EB Garamond', serif;
-    font-style: italic;
-    font-size: 16px;
-  }
-  .era-medieval .epoch-num {
-    font-family: 'EB Garamond', serif;
-    font-variant: small-caps;
-    letter-spacing: 4px;
-    font-size: 13px;
-  }
-  .era-medieval .epoch-body p {
-    font-family: 'EB Garamond', 'Palatino Linotype', serif;
-    font-size: clamp(17px, 1.8vw, 19px);
-    line-height: 1.95;
-    text-align: justify;
-    hyphens: auto;
-  }
-  .era-medieval blockquote {
-    font-family: 'EB Garamond', serif;
-    font-style: italic;
-    font-size: clamp(15px, 1.6vw, 17px);
-  }
-  .era-medieval .epoch-period {
-    font-family: 'EB Garamond', serif;
-    font-variant: small-caps;
-  }
-
-  /* III. EARLY MODERN — Humanist, Aldine press, Garamond */
-  .era-early-modern .epoch-title {
-    font-family: 'EB Garamond', serif;
-    font-weight: 600;
-    font-size: clamp(24px, 3.2vw, 34px);
-    font-style: italic;
-  }
-  .era-early-modern .epoch-subtitle {
-    font-family: 'EB Garamond', serif;
-    font-style: italic;
-    font-size: 17px;
-    color: var(--text-dim);
-  }
-  .era-early-modern .epoch-num {
-    font-family: 'EB Garamond', serif;
-    font-size: 13px;
-    font-variant: small-caps;
-    letter-spacing: 3px;
-  }
-  .era-early-modern .epoch-body p {
-    font-family: 'EB Garamond', 'Times New Roman', serif;
-    font-size: clamp(17px, 1.8vw, 19px);
-    line-height: 1.9;
-  }
-  .era-early-modern blockquote {
-    font-family: 'EB Garamond', serif;
-    font-style: italic;
-    font-size: clamp(15px, 1.6vw, 17px);
-  }
-  .era-early-modern .epoch-period {
-    font-family: 'EB Garamond', serif;
-    font-variant: small-caps;
-  }
-
-  /* IV. ENLIGHTENMENT — Didone / Bodoni, high contrast */
-  .era-enlightenment .epoch-title {
-    font-family: 'Playfair Display', 'Didot', serif;
-    font-weight: 700;
-    font-size: clamp(24px, 3.2vw, 34px);
-    letter-spacing: 1px;
-  }
-  .era-enlightenment .epoch-subtitle {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-weight: 400;
-    font-size: 17px;
-  }
-  .era-enlightenment .epoch-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 11px;
-    letter-spacing: 4px;
-    font-weight: 400;
-  }
-  .era-enlightenment .epoch-body p {
-    font-family: 'Playfair Display', 'Georgia', serif;
-    font-size: clamp(16px, 1.7vw, 18px);
-    line-height: 1.85;
-    font-weight: 400;
-  }
-  .era-enlightenment blockquote {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-weight: 400;
-    font-size: clamp(15px, 1.6vw, 17px);
-  }
-  .era-enlightenment .epoch-period {
-    font-family: 'Playfair Display', serif;
-    font-size: 11px;
-    letter-spacing: 2px;
-  }
-
-  /* V. 19TH CENTURY — Transitional, readable, industrial press */
-  .era-nineteenth .epoch-title {
-    font-family: 'Lora', serif;
-    font-weight: 600;
-    font-size: clamp(22px, 3vw, 30px);
-  }
-  .era-nineteenth .epoch-subtitle {
-    font-family: 'Lora', serif;
-    font-style: italic;
-    font-size: 16px;
-  }
-  .era-nineteenth .epoch-num {
-    font-family: 'Lora', serif;
-    font-size: 11px;
-    letter-spacing: 3px;
-    font-weight: 400;
-  }
-  .era-nineteenth .epoch-body p {
-    font-family: 'Lora', 'Georgia', serif;
-    font-size: clamp(16px, 1.7vw, 18px);
-    line-height: 1.85;
-  }
-  .era-nineteenth blockquote {
-    font-family: 'Lora', serif;
-    font-style: italic;
-    font-size: clamp(15px, 1.5vw, 17px);
-  }
-  .era-nineteenth .epoch-period {
-    font-family: 'Lora', serif;
-    font-size: 11px;
-    letter-spacing: 1px;
-  }
-
-  /* VI. 20TH CENTURY — Swiss grotesk, sans-serif, grid */
-  .era-twentieth .epoch-title {
-    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-    font-weight: 500;
-    font-size: clamp(22px, 3vw, 30px);
-    letter-spacing: -0.5px;
-  }
-  .era-twentieth .epoch-subtitle {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-size: 15px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
     font-weight: 300;
-    letter-spacing: 0.5px;
-  }
-  .era-twentieth .epoch-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 3px;
-    font-weight: 400;
-  }
-  .era-twentieth .epoch-body p {
-    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-    font-size: clamp(15px, 1.5vw, 17px);
-    line-height: 1.8;
-    font-weight: 300;
-  }
-  .era-twentieth blockquote {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: clamp(14px, 1.4vw, 16px);
-    letter-spacing: 0.3px;
-  }
-  .era-twentieth .epoch-period {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
+    line-height: 1.7;
+    overflow-x: hidden;
   }
 
-  /* VII. 21ST CENTURY — Monospace, code, technical */
-  .era-twentyfirst .epoch-title {
-    font-family: 'JetBrains Mono', 'Fira Code', monospace;
-    font-weight: 400;
-    font-size: clamp(18px, 2.5vw, 24px);
-    letter-spacing: 1px;
-  }
-  .era-twentyfirst .epoch-subtitle {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-size: 14px;
-    font-weight: 300;
-    color: var(--text-dim);
-  }
-  .era-twentyfirst .epoch-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 4px;
-  }
-  .era-twentyfirst .epoch-body p {
-    font-family: 'Inter', 'Helvetica Neue', sans-serif;
-    font-size: clamp(15px, 1.5vw, 17px);
-    line-height: 1.8;
-    font-weight: 300;
-  }
-  .era-twentyfirst blockquote {
-    font-family: 'JetBrains Mono', monospace;
-    font-style: normal;
-    font-size: clamp(13px, 1.3vw, 15px);
-    letter-spacing: 0.5px;
-    opacity: 0.8;
-  }
-  .era-twentyfirst .epoch-period {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-  }
-  .era-twentyfirst .epoch-names {
-    font-family: 'JetBrains Mono', monospace;
-  }
-
-  /* ============================================
-     SHARED LAYOUT
-     ============================================ */
-
+  /* === LAYOUT === */
   .page { display: flex; min-height: 100vh; }
 
-  /* NAV RAIL */
+  /* === NAV RAIL (left side, desktop) === */
   .nav-rail {
-    position: fixed; left: 0; top: 0; bottom: 0; width: 200px;
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 200px;
     background: var(--surface);
-    border-right: 1px solid var(--gold-faint);
-    display: flex; flex-direction: column;
-    padding: 40px 0; z-index: 100;
+    border-right: 1px solid rgba(198,168,91,0.08);
+    display: flex;
+    flex-direction: column;
+    padding: 40px 0;
+    z-index: 100;
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
+
   .nav-rail-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 15px; font-weight: 600;
-    color: var(--gold); letter-spacing: 0.5px;
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-transform: uppercase;
     padding: 0 24px 32px;
     border-bottom: 1px solid var(--gold-faint);
     margin-bottom: 24px;
   }
+
   .nav-link {
-    display: flex; align-items: baseline; gap: 10px;
-    padding: 10px 24px; text-decoration: none;
-    color: var(--text-dim); transition: all 0.25s ease;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 10px 24px;
+    text-decoration: none;
+    color: var(--text-dim);
+    transition: all 0.25s ease;
     border-left: 2px solid transparent;
   }
-  .nav-link:hover { color: var(--text); background: var(--gold-faint); }
+  .nav-link:hover {
+    color: var(--text);
+    background: var(--gold-faint);
+  }
   .nav-link.active {
-    color: var(--gold); border-left-color: var(--gold);
+    color: var(--nav-accent, var(--gold));
+    border-left-color: var(--nav-accent, var(--gold));
     background: var(--gold-faint);
   }
   .nav-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; font-weight: 400;
-    min-width: 18px; opacity: 0.5;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 400;
+    min-width: 18px;
+    opacity: 0.5;
   }
-  .nav-link.active .nav-num { opacity: 1; color: var(--gold); }
+  .nav-link.active .nav-num { opacity: 1; color: var(--nav-accent, var(--gold)); }
   .nav-label {
-    font-family: 'Inter', sans-serif;
-    font-size: 12px; letter-spacing: 0.3px;
+    font-size: 12px;
+    letter-spacing: 0.3px;
   }
+  /* Рельса навигации — типографская лента эпох:
+     каждая ссылка набрана дисплейным шрифтом своей эпохи */
+  .nav-link[data-target="antiquity"] { --nav-accent: #C9A227; }
+  .nav-link[data-target="antiquity"] .nav-label { font-family: 'Forum', serif; font-size: 13px; }
+  .nav-link[data-target="middle-ages"] { --nav-accent: #8E4A42; }
+  .nav-link[data-target="middle-ages"] .nav-label { font-family: 'Ruslan Display', serif; font-size: 11.5px; }
+  .nav-link[data-target="early-modern"] { --nav-accent: #7E9C8B; }
+  .nav-link[data-target="early-modern"] .nav-label { font-family: 'Oranienbaum', serif; font-size: 13.5px; }
+  .nav-link[data-target="enlightenment"] { --nav-accent: #8CA0B8; }
+  .nav-link[data-target="enlightenment"] .nav-label { font-family: 'Prata', serif; font-size: 12.5px; }
+  .nav-link[data-target="nineteenth"] { --nav-accent: #B87748; }
+  .nav-link[data-target="nineteenth"] .nav-label { font-family: 'Oswald', sans-serif; font-size: 12px; }
+  .nav-link[data-target="twentieth"] { --nav-accent: #C7402D; }
+  .nav-link[data-target="twentieth"] .nav-label { font-family: 'Poiret One', sans-serif; font-size: 13.5px; }
+  .nav-link[data-target="twentyfirst"] { --nav-accent: #63B8A8; }
+  .nav-link[data-target="twentyfirst"] .nav-label { font-family: 'Unbounded', sans-serif; font-size: 9.5px; }
 
-  /* MOBILE BAR */
+  /* === MOBILE TOP BAR === */
   .mobile-bar {
-    display: none; position: fixed; top: 0; left: 0; right: 0;
-    height: 52px; background: var(--surface);
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 52px;
+    background: var(--surface);
     border-bottom: 1px solid var(--gold-faint);
-    z-index: 200; align-items: center;
-    padding: 0 16px; gap: 12px;
+    z-index: 200;
+    align-items: center;
+    padding: 0 16px;
+    gap: 12px;
   }
   .mobile-bar-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 14px; font-weight: 600; color: var(--gold);
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
   }
   .mobile-bar-open {
     background: none; border: none; color: var(--text-dim);
-    font-size: 20px; cursor: pointer; padding: 4px 8px; margin-left: auto;
+    font-size: 20px; cursor: pointer;
+    padding: 4px 8px;
+    margin-left: auto;
   }
   .mobile-overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.6); z-index: 150;
-    opacity: 0; transition: opacity 0.3s ease;
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 150;
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
   .mobile-overlay.open { opacity: 1; }
 
-  /* CONTENT */
+  /* === MAIN CONTENT === */
   .content {
-    margin-left: 200px; flex: 1;
-    max-width: 720px; padding: 80px 48px 120px;
+    margin-left: 200px;
+    flex: 1;
+    max-width: 720px;
+    padding: 80px 48px 120px;
   }
 
-  /* PAGE TITLE */
+  /* === PAGE TITLE (above first epoch) === */
   .page-title-block {
-    margin-bottom: 72px; padding-bottom: 48px;
+    margin-bottom: 72px;
+    padding-bottom: 48px;
     border-bottom: 1px solid var(--gold-faint);
   }
   .page-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(28px, 4vw, 42px);
-    font-weight: 600; color: var(--text);
-    line-height: 1.3; margin-bottom: 16px;
+    font-family: var(--xxi);
+    font-size: clamp(24px, 3.6vw, 38px);
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: 16px;
   }
   .page-subtitle {
-    font-family: 'Inter', sans-serif;
-    font-size: 14px; color: var(--text-dim); letter-spacing: 0.5px;
+    font-size: 14px;
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
   }
   .page-english {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; letter-spacing: 3px;
-    color: var(--text-faint); text-transform: uppercase; margin-top: 20px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-top: 20px;
   }
 
-  /* EPOCH SECTIONS (shared structure) */
+  /* === EPOCH SECTIONS === */
   .epoch-section {
     margin-bottom: 80px;
-    opacity: 0; transform: translateY(20px);
+    opacity: 0;
+    transform: translateY(20px);
     transition: opacity 0.6s ease, transform 0.6s ease;
   }
-  .epoch-section.visible { opacity: 1; transform: translateY(0); }
+  .epoch-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
   .epoch-header {
-    margin-bottom: 32px; padding-bottom: 24px;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
     border-bottom: 1px solid rgba(198,168,91,0.1);
   }
   .epoch-num {
-    display: block; margin-bottom: 8px;
-    color: var(--gold-dim);
+    font-family: var(--e-display);
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: var(--e-accent);
+    display: block;
+    margin-bottom: 10px;
   }
   .epoch-title {
-    color: var(--text); line-height: 1.3; margin-bottom: 6px;
+    font-family: var(--e-display);
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: 6px;
   }
-  .epoch-subtitle { color: var(--text-dim); margin-bottom: 12px; }
-  .epoch-period { color: var(--text-faint); }
+  #antiquity .epoch-title,
+  #nineteenth .epoch-title,
+  #twentieth .epoch-title {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  #nineteenth .epoch-title,
+  #twentyfirst .epoch-title {
+    font-weight: 500;
+  }
+  .epoch-subtitle {
+    font-family: var(--e-text);
+    font-style: italic;
+    font-size: 16px;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+  }
+  #antiquity .epoch-subtitle { font-style: normal; }
+  .epoch-period {
+    font-family: var(--e-text);
+    font-size: 10.5px;
+    color: var(--e-accent);
+    opacity: 0.8;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
 
   .epoch-body p {
-    color: var(--text); margin-bottom: 20px; text-align: justify;
+    font-family: var(--e-text);
+    font-size: var(--e-body-size);
+    line-height: var(--e-body-lh);
+    color: var(--text);
+    margin-bottom: 20px;
+    text-align: justify;
   }
-  .epoch-body blockquote {
-    margin: 32px 0; padding: 20px 0 20px 24px;
-    border-left: 2px solid var(--gold-dim);
-    color: var(--text-dim); line-height: 1.7;
+  /* Буквица — дисплейный шрифт эпохи, приглушённый акцентный цвет */
+  .epoch-body > p:first-of-type::first-letter {
+    font-family: var(--e-display);
+    color: var(--e-accent);
+    float: left;
+    font-size: 2.9em;
+    line-height: 0.85;
+    padding: 0.05em 0.12em 0 0;
   }
-  .epoch-names {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; letter-spacing: 1px;
-    color: var(--text-faint); margin-top: 32px;
-    padding-top: 20px; border-top: 1px solid rgba(198,168,91,0.06);
+  #antiquity .epoch-body > p:first-of-type::first-letter,
+  #nineteenth .epoch-body > p:first-of-type::first-letter,
+  #twentyfirst .epoch-body > p:first-of-type::first-letter {
+    font-size: 2.3em;
+    line-height: 0.95;
   }
 
-  /* RESPONSIVE */
+  .epoch-body blockquote {
+    margin: 32px 0;
+    padding: 20px 0 20px 24px;
+    border-left: 2px solid var(--e-accent);
+    font-family: var(--e-text);
+    font-style: italic;
+    font-size: clamp(15px, 1.6vw, 17px);
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+  #antiquity .epoch-body blockquote { font-style: normal; letter-spacing: 0.5px; }
+
+  .epoch-body .epoch-names {
+    font-family: var(--e-text);
+    font-size: 10.5px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(198,168,91,0.06);
+  }
+
+  /* === COLOPHON === */
+  .colophon {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--gold-faint);
+  }
+  .colophon-note {
+    font-family: var(--sans);
+    font-size: 12.5px;
+    color: var(--text-dim);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+  .colophon-list {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    line-height: 1.9;
+    color: var(--text-faint);
+  }
+
+  /* === RESPONSIVE === */
   @media (max-width: 860px) {
     .nav-rail { transform: translateX(-100%); width: 240px; }
     .nav-rail.open { transform: translateX(0); }
     .mobile-bar { display: flex; }
     .mobile-overlay.open { display: block; }
-    .content { margin-left: 0; padding: 72px 24px 100px; max-width: 100%; }
+    .content {
+      margin-left: 0;
+      padding: 72px 24px 100px;
+      max-width: 100%;
+    }
     .page-title-block { margin-bottom: 48px; padding-bottom: 32px; }
     .epoch-section { margin-bottom: 56px; }
   }
 
-  /* SCROLLBAR */
+  /* === SCROLLBAR === */
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
   ::-webkit-scrollbar-thumb { background: var(--surface-2); border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--text-faint); }
 
-  /* REDUCED MOTION */
+  /* === REDUCED MOTION === */
   @media (prefers-reduced-motion: reduce) {
     .epoch-section { opacity: 1; transform: none; transition: none; }
     html { scroll-behavior: auto; }
@@ -442,13 +391,15 @@
 </head>
 <body>
 
+<!-- Mobile top bar -->
 <div class="mobile-bar">
   <span class="mobile-bar-title">Эпохи</span>
-  <button class="mobile-bar-open" id="menuBtn" aria-label="Навигация">&#9776;</button>
+  <button class="mobile-bar-open" id="menuBtn" aria-label="Открыть навигацию">&#9776;</button>
 </div>
 <div class="mobile-overlay" id="overlay"></div>
 
 <div class="page">
+  <!-- Left nav rail -->
   <nav class="nav-rail" id="navRail" aria-label="Навигация по эпохам">
     <div class="nav-rail-title">Эпохи</div>
     <a href="#antiquity" class="nav-link" data-target="antiquity">
@@ -479,16 +430,18 @@
       <span class="nav-num">VII</span>
       <span class="nav-label">Конец XX — XXI век</span>
     </a>
+
   </nav>
 
+  <!-- Main content -->
   <main class="content">
     <div class="page-title-block">
       <h1 class="page-title">Язык сквозь эпохи</h1>
-      <p class="page-subtitle">Семь эпох языковой мысли — каждая своим шрифтом</p>
+      <p class="page-subtitle">Семь эпох языковой мысли — каждая своими словами</p>
       <p class="page-english">Language Through the Ages</p>
     </div>
 
-  <section id="antiquity" class="epoch-section era-antiquity">
+  <section id="antiquity" class="epoch-section">
     <div class="epoch-header">
       <span class="epoch-num">I</span>
       <h2 class="epoch-title">Античность</h2>
@@ -504,7 +457,7 @@
     </div>
   </section>
 
-  <section id="middle-ages" class="epoch-section era-medieval">
+  <section id="middle-ages" class="epoch-section">
     <div class="epoch-header">
       <span class="epoch-num">II</span>
       <h2 class="epoch-title">Средние века</h2>
@@ -520,7 +473,7 @@
     </div>
   </section>
 
-  <section id="early-modern" class="epoch-section era-early-modern">
+  <section id="early-modern" class="epoch-section">
     <div class="epoch-header">
       <span class="epoch-num">III</span>
       <h2 class="epoch-title">Раннее Новое время</h2>
@@ -536,7 +489,7 @@
     </div>
   </section>
 
-  <section id="enlightenment" class="epoch-section era-enlightenment">
+  <section id="enlightenment" class="epoch-section">
     <div class="epoch-header">
       <span class="epoch-num">IV</span>
       <h2 class="epoch-title">Просвещение</h2>
@@ -552,7 +505,7 @@
     </div>
   </section>
 
-  <section id="nineteenth" class="epoch-section era-nineteenth">
+  <section id="nineteenth" class="epoch-section">
     <div class="epoch-header">
       <span class="epoch-num">V</span>
       <h2 class="epoch-title">XIX век</h2>
@@ -568,7 +521,7 @@
     </div>
   </section>
 
-  <section id="twentieth" class="epoch-section era-twentieth">
+  <section id="twentieth" class="epoch-section">
     <div class="epoch-header">
       <span class="epoch-num">VI</span>
       <h2 class="epoch-title">XX век</h2>
@@ -584,7 +537,7 @@
     </div>
   </section>
 
-  <section id="twentyfirst" class="epoch-section era-twentyfirst">
+  <section id="twentyfirst" class="epoch-section">
     <div class="epoch-header">
       <span class="epoch-num">VII</span>
       <h2 class="epoch-title">Конец XX — XXI век</h2>
@@ -600,41 +553,62 @@
     </div>
   </section>
 
+
+
+    <footer class="colophon">
+      <p class="colophon-note">Типографика этой страницы — часть содержания: каждая эпоха набрана шрифтами, родственными письменности своего времени; интерфейс дома — вневременной.</p>
+      <p class="colophon-list">I Forum · II Ruslan Display, Alegreya · III Oranienbaum, EB Garamond · IV Prata, Old Standard TT · V Oswald, Bitter · VI Poiret One, Jost · VII Unbounded, Inter, JetBrains Mono</p>
+    </footer>
   </main>
 </div>
 
 <script>
+  // --- Mobile menu toggle ---
   const menuBtn = document.getElementById('menuBtn');
   const navRail = document.getElementById('navRail');
   const overlay = document.getElementById('overlay');
+
   function openMenu() { navRail.classList.add('open'); overlay.classList.add('open'); }
   function closeMenu() { navRail.classList.remove('open'); overlay.classList.remove('open'); }
+
   menuBtn.addEventListener('click', () => {
     navRail.classList.contains('open') ? closeMenu() : openMenu();
   });
   overlay.addEventListener('click', closeMenu);
-  document.querySelectorAll('.nav-link').forEach(l => l.addEventListener('click', closeMenu));
 
-  const secs = document.querySelectorAll('.epoch-section');
-  const links = document.querySelectorAll('.nav-link');
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        const id = e.target.id;
-        links.forEach(l => l.classList.remove('active'));
-        const a = document.querySelector('.nav-link[data-target="' + id + '"]');
-        if (a) a.classList.add('active');
+  // Close menu on nav link click (mobile)
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  // --- Active nav on scroll ---
+  const sections = document.querySelectorAll('.epoch-section');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.nav-link[data-target="${id}"]`);
+        if (active) active.classList.add('active');
       }
     });
   }, { rootMargin: '-20% 0px -60% 0px' });
-  secs.forEach(s => obs.observe(s));
 
-  const fadeObs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('visible'); fadeObs.unobserve(e.target); }
+  sections.forEach(s => observer.observe(s));
+
+  // --- Fade-in on scroll ---
+  const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        fadeObserver.unobserve(entry.target);
+      }
     });
   }, { threshold: 0.1 });
-  secs.forEach(s => fadeObs.observe(s));
+
+  sections.forEach(s => fadeObserver.observe(s));
 </script>
 </body>
 </html>
