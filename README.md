@@ -62,3 +62,9 @@
 
 ---
 *2026 · сделано с уважением к читателю*
+
+## Эпохальная типографика · раздел `epohi-typografika/`
+
+Альтернативная сборка того же эссе — **«семь эпох · семь почерков»**: каждая эпоха набрана шрифтами, родственными письменности своего времени (Forum — римская капитель; Ruslan Display + Alegreya — вязь и рукописное перо; Oranienbaum + EB Garamond — первопечатники; Prata + Old Standard TT — классицизм; Oswald + Bitter — индустриальный век; Poiret One + Jost — ар-деко и модернизм; Unbounded + Inter + JetBrains Mono — настоящее). Все 14 семейств проверены на кириллические подмножества через Google Fonts API. Рельса навигации — типографская лента эпох; интерфейс дома вневременной. Генератор — `scripts/generate_epohi_html.py`.
+
+**Читать:** https://rtynbirf.github.io/yazyk-skvoz-epohi/epohi-typografika/
