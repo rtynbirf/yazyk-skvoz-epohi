@@ -31,7 +31,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: δ₁ — XML дома well-formed: feed.xml, feed-la.xml, sitemap.xml
+      - name: "δ₁ — XML дома well-formed: feed.xml, feed-la.xml, sitemap.xml"
         run: |
           set -e
           python3 - <<'PY'
@@ -41,10 +41,10 @@ jobs:
               print(f"✓ {f} well-formed")
           PY
 
-      - name: δ₂ — HTML: Nu HTML Checker (vnu) по всем html дома
+      - name: "δ₂ — HTML: Nu HTML Checker (vnu) по всем html дома"
         run: |
           python3 -m pip install --quiet html5validator
           html5validator --root . --log INFO
 
-      - name: δ₃ — ДКА-приёмка: инварианты артефактов, fail-closed
+      - name: "δ₃ — ДКА-приёмка: инварианты артефактов, fail-closed"
         run: python3 scripts/check.py

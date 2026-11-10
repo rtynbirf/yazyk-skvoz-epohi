@@ -7,8 +7,7 @@
 name: Счётчик-автомат
 
 permissions:
-  contents: write      # коммит traffic.json
-  administration: read # REST /traffic/views требует administration (read)
+  contents: write # коммит traffic.json; traffic API проверим живым прогоном
 
 on:
   schedule:
