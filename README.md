@@ -4,6 +4,15 @@
   <img src="banner.png" width="100%" alt="Штандарт yazyk-skvoz-epohi: обсидиан и расплавленное золото, кузня rtynbirf" />
 </div>
 
+<!--ФОРЖ:МУЗА:НАЧАЛО-->
+<div align="center">
+  <img src="repo-muse.svg" width="100%" alt="Муза yazyk-skvoz-epohi: картина кузни ПОЛИМАТ, раунд 9" />
+  <br/>
+  <img src="forge-divider.svg" width="62%" alt="разделитель кузни ПОЛИМАТ" />
+</div>
+<!--ФОРЖ:МУЗА:КОНЕЦ-->
+
+
 
 [![Страж дома](https://github.com/rtynbirf/yazyk-skvoz-epohi/actions/workflows/guard.yml/badge.svg)](https://github.com/rtynbirf/yazyk-skvoz-epohi/actions/workflows/guard.yml)
 [![Счётчик-автомат](https://github.com/rtynbirf/yazyk-skvoz-epohi/actions/workflows/traffic.yml/badge.svg)](https://github.com/rtynbirf/yazyk-skvoz-epohi/actions/workflows/traffic.yml)
@@ -73,3 +82,10 @@
 Альтернативная сборка того же эссе — **«семь эпох · семь почерков»**: каждая эпоха набрана шрифтами, родственными письменности своего времени (Forum — римская капитель; Ruslan Display + Alegreya — вязь и рукописное перо; Oranienbaum + EB Garamond — первопечатники; Prata + Old Standard TT — классицизм; Oswald + Bitter — индустриальный век; Poiret One + Jost — ар-деко и модернизм; Unbounded + Inter + JetBrains Mono — настоящее). Все 14 семейств проверены на кириллические подмножества через Google Fonts API. Рельса навигации — типографская лента эпох; интерфейс дома вневременной. Генератор — `scripts/generate_epohi_html.py`.
 
 **Читать:** https://rtynbirf.github.io/yazyk-skvoz-epohi/epohi-typografika/
+
+<!--ФОРЖ:ПОДВАЛ-->
+---
+
+<div align="center">
+  <sub>◆ картина и штандарт — ручная ковка <a href="https://github.com/rtynbirf">КУЗНИ ПОЛИМАТ</a> · ЧЕЛОВЕК=АККАУНТ=PID1 ◆</sub>
+</div>
