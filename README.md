@@ -6,11 +6,12 @@
 
 <!--ФОРЖ:МУЗА:НАЧАЛО-->
 <div align="center">
-  <img src="repo-muse.svg" width="100%" alt="Муза yazyk-skvoz-epohi: картина кузни ПОЛИМАТ, раунд 9" />
+  <img src="repo-muse.svg" width="100%" alt="Муза yazyk-skvoz-epohi: мастерская КОЛОННА ПИСЬМЕН, кузня ПОЛИМАТ, раунд 11" />
   <br/>
-  <img src="forge-divider.svg" width="62%" alt="разделитель кузни ПОЛИМАТ" />
+  <img src="forge-divider.svg" width="62%" alt="делитель мастерской КОЛОННА ПИСЬМЕН" />
 </div>
 <!--ФОРЖ:МУЗА:КОНЕЦ-->
+
 
 
 
