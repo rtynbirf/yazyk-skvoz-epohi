@@ -1,26 +1,38 @@
-# Язык сквозь эпохи · Дом-Автомат v21
-
 <div align="center">
-  <img src="banner.png" width="100%" alt="Штандарт yazyk-skvoz-epohi: обсидиан и расплавленное золото, кузня rtynbirf" />
+
+<a href="https://github.com/rtynbirf/yazyk-skvoz-epohi"><img src="banner.png" width="100%" alt="yazyk-skvoz-epohi — штандарт мастерской в каноне ORNAMENTAL MYTHO-REALISM"></a>
+
 </div>
 
 <!--ФОРЖ:МУЗА:НАЧАЛО-->
 <div align="center">
-  <img src="repo-muse.svg" width="100%" alt="Муза yazyk-skvoz-epohi: мастерская КОЛОННА ПИСЬМЕН, кузня ПОЛИМАТ, раунд 12 · REVE=РЕВО" />
+  <img src="https://cdn.jsdelivr.net/gh/rtynbirf/yazyk-skvoz-epohi@main/repo-muse.svg" width="100%" alt="Муза yazyk-skvoz-epohi: мастерская КОЛОННА ПИСЬМЕН, кузня ПОЛИМАТ, раунд 12 · REVE=РЕВО" />
   <br/>
-  <img src="forge-divider.svg" width="62%" alt="делитель мастерской КОЛОННА ПИСЬМЕН" />
+  <img src="https://cdn.jsdelivr.net/gh/rtynbirf/yazyk-skvoz-epohi@main/forge-divider.svg" width="62%" alt="делитель мастерской КОЛОННА ПИСЬМЕН" />
 </div>
 <!--ФОРЖ:МУЗА:КОНЕЦ-->
 
 <!--ФОРЖ:ПАСПОРТ:НАЧАЛО-->
 <div align="center">
-  <img src="revo-page.svg" width="100%" alt="РЕВО-паспорт страницы yazyk-skvoz-epohi: строение файлов, лексикон, числа — по фактическому контенту" />
+  <img src="revo-page.svg" width="100%" alt="РЕВО-паспорт страницы yazyk-skvoz-epohi №62 в каноне ORNAMENTAL MYTHO-REALISM: орнаментальная решётка, медальон-миф, строение файлов, лексикон — по фактическому контенту" />
 </div>
 
 | ФАЙЛОВ | ПАПОК | КОММИТОВ | ОБНОВЛЕНО | РЕЛИЗОВ |
 |---:|---:|---:|---|---:|
-| 44 | 5 | 51 | 2026-11-16 | 1 |
+| 54 | 7 | 1 | 2026-11-28 | 1 |
 <!--ФОРЖ:ПАСПОРТ:КОНЕЦ-->
+
+# Язык сквозь эпохи · Дом-Автомат v21
+
+<p align="center"><img src="https://cdn.jsdelivr.net/gh/rtynbirf/yazyk-skvoz-epohi@main/.github/social-preview.png" alt="yazyk-skvoz-epohi" width="100%"></p>
+
+<div align="center">
+  <img src="banner.png" width="100%" alt="Штандарт yazyk-skvoz-epohi: обсидиан и расплавленное золото, кузня rtynbirf" />
+</div>
+
+
+
+
 
 
 
