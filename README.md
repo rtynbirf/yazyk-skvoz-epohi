@@ -22,6 +22,18 @@
 | 54 | 7 | 1 | 2026-11-28 | 1 |
 <!--ФОРЖ:ПАСПОРТ:КОНЕЦ-->
 
+# yazyk-skvoz-epohi
+
+<div align="center">
+
+<a href="https://github.com/rtynbirf/yazyk-skvoz-epohi"><img src="banner.png" width="100%" alt="yazyk-skvoz-epohi — штандарт мастерской в каноне ORNAMENTAL MYTHO-REALISM"></a>
+
+</div>
+
+
+
+
+
 # Язык сквозь эпохи · Дом-Автомат v21
 
 <p align="center"><img src="https://cdn.jsdelivr.net/gh/rtynbirf/yazyk-skvoz-epohi@main/.github/social-preview.png" alt="yazyk-skvoz-epohi" width="100%"></p>
